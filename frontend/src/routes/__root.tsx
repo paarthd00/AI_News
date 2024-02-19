@@ -3,7 +3,7 @@ import Header from '@/components/header'
 export const Route = createRootRoute({
   component: () => (
     <>
-      <div className="p-2 flex gap-2 items-center">
+      <div className="p-2 flex gap-2 items-center justify-center w-100">
         <Link to="/" className="[&.active]:font-bold">
           <Header />
         </Link>{' '}
