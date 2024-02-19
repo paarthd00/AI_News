@@ -8,11 +8,44 @@ import { Route as rootRoute } from './routes/__root'
 
 // Create Virtual Routes
 
+const ThreadsComponentImport = createFileRoute('/threads')()
+const SubmitComponentImport = createFileRoute('/submit')()
+const NewComponentImport = createFileRoute('/new')()
 const EditComponentImport = createFileRoute('/edit')()
-const AddComponentImport = createFileRoute('/add')()
+const CommentsComponentImport = createFileRoute('/comments')()
 const IndexComponentImport = createFileRoute('/')()
 
 // Create/Update Routes
+
+const ThreadsComponentRoute = ThreadsComponentImport.update({
+  path: '/threads',
+  getParentRoute: () => rootRoute,
+} as any).update({
+  component: lazyRouteComponent(
+    () => import('./routes/threads.component'),
+    'component',
+  ),
+})
+
+const SubmitComponentRoute = SubmitComponentImport.update({
+  path: '/submit',
+  getParentRoute: () => rootRoute,
+} as any).update({
+  component: lazyRouteComponent(
+    () => import('./routes/submit.component'),
+    'component',
+  ),
+})
+
+const NewComponentRoute = NewComponentImport.update({
+  path: '/new',
+  getParentRoute: () => rootRoute,
+} as any).update({
+  component: lazyRouteComponent(
+    () => import('./routes/new.component'),
+    'component',
+  ),
+})
 
 const EditComponentRoute = EditComponentImport.update({
   path: '/edit',
@@ -24,12 +57,12 @@ const EditComponentRoute = EditComponentImport.update({
   ),
 })
 
-const AddComponentRoute = AddComponentImport.update({
-  path: '/add',
+const CommentsComponentRoute = CommentsComponentImport.update({
+  path: '/comments',
   getParentRoute: () => rootRoute,
 } as any).update({
   component: lazyRouteComponent(
-    () => import('./routes/add.component'),
+    () => import('./routes/comments.component'),
     'component',
   ),
 })
@@ -52,12 +85,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexComponentImport
       parentRoute: typeof rootRoute
     }
-    '/add': {
-      preLoaderRoute: typeof AddComponentImport
+    '/comments': {
+      preLoaderRoute: typeof CommentsComponentImport
       parentRoute: typeof rootRoute
     }
     '/edit': {
       preLoaderRoute: typeof EditComponentImport
+      parentRoute: typeof rootRoute
+    }
+    '/new': {
+      preLoaderRoute: typeof NewComponentImport
+      parentRoute: typeof rootRoute
+    }
+    '/submit': {
+      preLoaderRoute: typeof SubmitComponentImport
+      parentRoute: typeof rootRoute
+    }
+    '/threads': {
+      preLoaderRoute: typeof ThreadsComponentImport
       parentRoute: typeof rootRoute
     }
   }
@@ -67,6 +112,9 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexComponentRoute,
-  AddComponentRoute,
+  CommentsComponentRoute,
   EditComponentRoute,
+  NewComponentRoute,
+  SubmitComponentRoute,
+  ThreadsComponentRoute,
 ])

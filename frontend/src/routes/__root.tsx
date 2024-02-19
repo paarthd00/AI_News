@@ -1,14 +1,23 @@
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
-
+import Header from '@/components/header'
 export const Route = createRootRoute({
   component: () => (
     <>
-      <div className="p-2 flex gap-2">
+      <div className="p-2 flex gap-2 items-center">
         <Link to="/" className="[&.active]:font-bold">
-          Home
+          <Header />
         </Link>{' '}
-        <Link to="/add" className="[&.active]:font-bold">
-          Add 
+        <Link to="/new" className="[&.active]:font-bold">
+          new {' | '}
+        </Link>
+        <Link to="/threads" className="[&.active]:font-bold">
+          threads {' | '}
+        </Link>
+        <Link to="/comments" className="[&.active]:font-bold">
+          comments {' | '}
+        </Link>
+        <Link to="/submit" className="[&.active]:font-bold">
+          submit
         </Link>
       </div>
       <hr />
