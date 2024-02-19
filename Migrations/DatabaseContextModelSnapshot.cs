@@ -29,6 +29,10 @@ namespace AINews.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("longtext");

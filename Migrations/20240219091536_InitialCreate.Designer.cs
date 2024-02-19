@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AINews.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240219085335_Users")]
-    partial class Users
+    [Migration("20240219091536_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,10 @@ namespace AINews.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("AuthorName")
                         .IsRequired()
                         .HasColumnType("longtext");
 

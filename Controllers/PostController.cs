@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AINews.Models;
-
+using Microsoft.AspNetCore.SignalR;
+using AINews.Hubs;
 namespace AINews.Controllers;
 
 [ApiController]
@@ -10,10 +11,11 @@ namespace AINews.Controllers;
 public class PostsController : ControllerBase
 {
     private readonly DatabaseContext _context;
-
-    public PostsController(DatabaseContext context)
+    private readonly IHubContext<PostHub> _hubContext;
+    public PostsController(DatabaseContext context, IHubContext<PostHub> hubContext)
     {
         _context = context;
+        _hubContext = hubContext;
     }
 
     [HttpGet]
@@ -41,7 +43,7 @@ public class PostsController : ControllerBase
     {
         _context.Posts.Add(Post);
         await _context.SaveChangesAsync();
-
+        await _hubContext.Clients.All.SendAsync("newPost", Post);
         return CreatedAtAction(nameof(GetPostItem), new { id = Post.Id }, Post);
     }
 

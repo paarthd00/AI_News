@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using AINews.Models;
-
+using Microsoft.AspNetCore.SignalR;
+using AINews.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load();
 
@@ -20,13 +21,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSignalR();
+
+
+
 var app = builder.Build();
+
+
+app.MapHub<PostHub>("/api/posthub");
+
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
+
+
 
 app.MapControllers();
 
