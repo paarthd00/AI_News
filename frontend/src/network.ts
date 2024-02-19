@@ -1,59 +1,53 @@
-export type Milk = {
+export type Post = {
   id: number;
-  type: string;
-  rating: number;
+  title: string;
+  content: number;
+  upVotes?: number;
+  downVotes?: number;
   createdAt: string;
 };
 
-export async function getMilks() {
-  const result = await fetch("/api/Milks");
+export async function getPosts() {
+  const result = await fetch("/api/Posts");
   return await result.json();
 }
 
-export async function deleteMilk(id: number) {
-  await fetch(`/api/Milks/${id}`, { method: "DELETE" });
+export async function deletePost(id: number) {
+  await fetch(`/api/Posts/${id}`, { method: "DELETE" });
 }
 
-export async function createMilk({
-  type,
-  rating,
+export async function createPost({
+  title,
+  content,
 }: {
-  type: string;
-  rating: number;
+  title: string;
+  content: string;
 }) {
-  const milk = await fetch("/api/milks", {
+  const milk = await fetch("/api/posts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ type, rating }),
+    body: JSON.stringify({ title, content }),
   }).then((response) => response.json());
   return milk;
 }
 
-export async function updateMilk({
+export async function updatePost({
   id,
-  newMilk,
+  newPost,
 }: {
   id: number;
-  newMilk: Milk;
+  newPost: Post;
 }) {
-  console.log("updateMilk", id, newMilk);
-  let resp = await fetch(`/api/milks/${id}`, {
+  console.log("updateMilk", id, newPost);
+  let resp = await fetch(`/api/posts/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(newMilk),
+    body: JSON.stringify(newPost),
   });
 
   return resp;
-}
-
-// /api/Milks/ByRating?starRating=3
-export default async function getMilkByRating(rating: number) {
-  const result = await fetch(`/api/Milks/ByRating?starRating=${rating}`, {
-    method: "GET",
-  });
-  return await result.json();
 }

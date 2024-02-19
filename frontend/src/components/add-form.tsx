@@ -17,7 +17,7 @@ import { formSchema } from "@/lib/validation";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from "react-hook-form";
 import * as z from 'zod';
-import { createMilk } from "@/network";
+import { createPost } from "@/network";
 
 export default function AddForm() {
 
@@ -26,20 +26,20 @@ export default function AddForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      type: "",
-      rating: 0,
+      title: "",
+      content: "",
     },
   })
 
   const addMilkMutation = useMutation({
-    mutationFn: createMilk,
-    onSettled: () => queryClient.invalidateQueries({ "queryKey": ["milkData"] })
+    mutationFn: createPost,
+    onSettled: () => queryClient.invalidateQueries({ "queryKey": ["postData"] })
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    const { type, rating } = values;
+    const { title, content } = values;
     try {
-      addMilkMutation.mutate({ type, rating });
+      addMilkMutation.mutate({ title, content });
     } catch (error) {
       alert("Error creating milk");
     } finally {
@@ -52,15 +52,15 @@ export default function AddForm() {
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="type"
+          name="title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Type</FormLabel>
               <FormControl>
-                <Input placeholder="Milk type" {...field} />
+                <Input placeholder="Title" {...field} />
               </FormControl>
               <FormDescription>
-                This is the type of milk you are rating
+                Write post title here...
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -68,26 +68,15 @@ export default function AddForm() {
         />
         <FormField
           control={form.control}
-          name="rating"
+          name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Rating</FormLabel>
+              <FormLabel>Type</FormLabel>
               <FormControl>
-                <Input
-                  min={0}
-                  max={5}
-                  type="number"
-                  placeholder="Enter rating (0-5)"
-                  {...field}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    // Parse the input value as a number
-                    field.onChange(value !== '' ? Number(value) : undefined);
-                  }}
-                />
+                <Input placeholder="Content" {...field} />
               </FormControl>
               <FormDescription>
-                Please enter a number between 0 and 5 for the rating.
+                Write Post content here...
               </FormDescription>
               <FormMessage />
             </FormItem>

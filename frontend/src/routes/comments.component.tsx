@@ -1,12 +1,11 @@
-import { deleteMilk, Milk, getMilks } from "@/network";
-import { queryClient } from "@/main";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { getPosts } from "@/network";
+import { useQuery } from "@tanstack/react-query";
 
 export const component = function New() {
     // Make sure to keep the query and mutation before any return statement 
     const { isPending, error, data } = useQuery({
-        queryKey: ['milkData'],
-        queryFn: getMilks
+        queryKey: ['postData'],
+        queryFn: getPosts
     })
 
     if (isPending) return <div>Loading...</div>

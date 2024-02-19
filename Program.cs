@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TypesOfMilk.Models;
+using AINews.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load();

@@ -1,17 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace TypesOfMilk.Models;
+namespace AINews.Models;
 
 public class DatabaseContext : DbContext
 {
   public DatabaseContext(DbContextOptions<DatabaseContext> options)
       : base(options) { }
 
-  public DbSet<Milk> Milks => Set<Milk>();
+  public DbSet<Post> Posts => Set<Post>();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.Entity<Milk>()
+    modelBuilder.Entity<Post>()
         .Property(e => e.CreatedAt)
         .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
   }
