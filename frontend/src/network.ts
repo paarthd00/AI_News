@@ -1,7 +1,7 @@
 export type Post = {
   id: number;
   title: string;
-  content: number;
+  content: string;
   upVotes?: number;
   downVotes?: number;
   createdAt: string;

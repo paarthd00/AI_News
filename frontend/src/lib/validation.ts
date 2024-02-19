@@ -8,6 +8,8 @@ export const formSchema = z.object({
 export const editSearchSchema = z.object({
   id: z.number(),
   title: z.string(),
-  rating: z.number().min(0).max(5),
+  content: z.string(),
+  upvotes: z.number(),
+  downvotes: z.number(),
   createdAt: z.string(),
 });

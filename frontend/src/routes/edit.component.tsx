@@ -8,14 +8,14 @@ export const Route = createFileRoute('/edit')({
 
 export const component = function Edit() {
 
-    const { id, type, rating, createdAt } = Route.useSearch()
+    const { id, title, content, createdAt } = Route.useSearch()
 
     return (
         <div className="container">
             <EditForm
-                milkId={id}
-                milkType={type}
-                milkRating={rating}
+                postId={id}
+                title={title}
+                content={content}
                 createdAt={createdAt}
             />
         </div>

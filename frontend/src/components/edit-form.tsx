@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input"
-import { Milk } from "@/network";
+import { Post } from "@/network";
 import {
     Form,
     FormControl,
@@ -15,21 +15,21 @@ import { formSchema } from "@/lib/validation";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from "react-hook-form";
 import * as z from 'zod';
-import { updateMilk } from "@/network";
+import { updatePost } from "@/network";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
 import { useNavigate } from "@tanstack/react-router";
 
 export default function EditForm({
-    milkId,
-    milkType,
-    milkRating,
+    postId,
+    title,
+    content,
     createdAt
 }:
     {
-        milkId: number,
-        milkType: string,
-        milkRating: number
+        postId: number,
+        title: string,
+        content: string
         createdAt: string
     }) {
     const Navigate = useNavigate();
@@ -37,33 +37,33 @@ export default function EditForm({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            type: milkType,
-            rating: milkRating,
+            title: title,
+            content: content,
         },
     })
 
-    const editMilkMutation = useMutation({
-        mutationFn: updateMilk,
-        onSettled: () => queryClient.invalidateQueries({ "queryKey": ["milkData"] })
+    const editPostMutation = useMutation({
+        mutationFn: updatePost,
+        onSettled: () => queryClient.invalidateQueries({ "queryKey": ["postData"] })
     });
 
     const handleEditMilk = async (values: z.infer<typeof formSchema>) => {
-        const { type, rating } = values;
+        const { title, content } = values;
 
-        if (!type || !rating || !milkId) {
+        if (!title || !content || !postId) {
             alert("Please fill out all fields")
             return
         }
 
-        let newMilk: Milk = {
-            id: milkId,
-            type: "",
-            rating: 0,
+        let newPost: Post = {
+            id: postId,
+            title: "",
+            content: "",
             createdAt: createdAt
-        }; newMilk.type = type; newMilk.rating = rating;
+        }; newPost.title = title; newPost.content = content;
 
         try {
-            await editMilkMutation.mutateAsync({ "id": milkId, newMilk });
+            await editPostMutation.mutateAsync({ "id": postId, newPost });
         } catch (error) {
             alert("Error editing milk");
             console.log(error);
@@ -77,15 +77,15 @@ export default function EditForm({
             <form onSubmit={form.handleSubmit(handleEditMilk)} className="space-y-8">
                 <FormField
                     control={form.control}
-                    name="type"
+                    name="title"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Type</FormLabel>
+                            <FormLabel>Title</FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
                             <FormDescription>
-                                This is the type of milk you are rating
+                                Post Title
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -93,22 +93,15 @@ export default function EditForm({
                 />
                 <FormField
                     control={form.control}
-                    name="rating"
+                    name="content"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Rating</FormLabel>
                             <FormControl>
-                                <Input
-                                    type="number"
-                                    {...field}
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        field.onChange(value !== '' ? Number(value) : undefined);
-                                    }}
-                                />
+                                <Input {...field} />
                             </FormControl>
                             <FormDescription>
-                                Please enter a number between 0 and 5 for the rating.
+                                please update post content here...
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
