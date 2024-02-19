@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace TypesOfMilk.Migrations
+namespace AINews.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot
@@ -25,7 +25,7 @@ namespace TypesOfMilk.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Author")
+                    b.Property<string>("AuthorId")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -51,41 +51,6 @@ namespace TypesOfMilk.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("AINews.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Interests")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

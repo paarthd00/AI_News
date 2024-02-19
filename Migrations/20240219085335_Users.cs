@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TypesOfMilk.Migrations
+namespace AINews.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Users : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,7 +25,7 @@ namespace TypesOfMilk.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Author = table.Column<string>(type: "longtext", nullable: false)
+                    AuthorId = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UpVotes = table.Column<int>(type: "int", nullable: false),
                     DownVotes = table.Column<int>(type: "int", nullable: false),

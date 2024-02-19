@@ -9,7 +9,6 @@ public class DatabaseContext : DbContext
 
   public DbSet<Post> Posts => Set<Post>();
 
-  public DbSet<User> Users => Set<User>();
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     modelBuilder.Entity<Post>()

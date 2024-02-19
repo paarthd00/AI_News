@@ -2,6 +2,7 @@ export type Post = {
   id: number;
   title: string;
   content: string;
+  authorId: string;
   upVotes?: number;
   downVotes?: number;
   createdAt: string;
@@ -19,16 +20,18 @@ export async function deletePost(id: number) {
 export async function createPost({
   title,
   content,
+  authorId,
 }: {
   title: string;
   content: string;
+  authorId: string;
 }) {
   const milk = await fetch("/api/posts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title, content }),
+    body: JSON.stringify({ title, content, authorId }),
   }).then((response) => response.json());
   return milk;
 }

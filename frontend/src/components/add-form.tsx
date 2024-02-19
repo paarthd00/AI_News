@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
@@ -11,17 +11,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
 import { formSchema } from "@/lib/validation";
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from 'zod';
+import * as z from "zod";
 import { createPost } from "@/network";
-
+import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 export default function AddForm() {
-
   const Navigate = useNavigate();
+
+  const { user } = useKindeAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -29,21 +30,22 @@ export default function AddForm() {
       title: "",
       content: "",
     },
-  })
+  });
 
-  const addMilkMutation = useMutation({
+  const addPostMutation = useMutation({
     mutationFn: createPost,
-    onSettled: () => queryClient.invalidateQueries({ "queryKey": ["postData"] })
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["postData"] }),
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const { title, content } = values;
+    const authorId = user?.id || "";
     try {
-      addMilkMutation.mutate({ title, content });
+      addPostMutation.mutate({ title, content, authorId });
     } catch (error) {
       alert("Error creating milk");
     } finally {
-      Navigate({ to: "/" })
+      Navigate({ to: "/" });
     }
   };
 
@@ -59,9 +61,7 @@ export default function AddForm() {
               <FormControl>
                 <Input placeholder="Title" {...field} />
               </FormControl>
-              <FormDescription>
-                Write post title here...
-              </FormDescription>
+              <FormDescription>Write post title here...</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -75,17 +75,13 @@ export default function AddForm() {
               <FormControl>
                 <Input placeholder="Content" {...field} />
               </FormControl>
-              <FormDescription>
-                Write Post content here...
-              </FormDescription>
+              <FormDescription>Write Post content here...</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">
-          Submit
-        </Button>
+        <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }

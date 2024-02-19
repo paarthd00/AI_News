@@ -1,8 +1,8 @@
-import AddForm from "@/components/add-form"
+import AddForm from "@/components/add-form";
 export const component = function Add() {
-    return(
-      <div className="container">
-        <AddForm />
-      </div>
-    )
-  }
+  return (
+    <div className="container">
+      <AddForm />
+    </div>
+  );
+};
