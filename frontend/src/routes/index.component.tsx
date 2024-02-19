@@ -23,11 +23,11 @@ export const component = function Home() {
     <div className="py-10 container">
       {data?.map((post: Post) => (
         <div key={post.id}>
-          <h2 className="text-2xl">{post.title}</h2>
-          <p>Rating: {post.content}</p>
-          <p>Created At: {post.createdAt}</p>
-
-          <div className="flex gap-2">
+          <h2 className="text-md">{post.title}</h2>
+          {/* <p>{post.content}</p> */}
+          <p>{post.createdAt}</p>
+          <p>{post.upVotes} points by author</p>
+          {/* <div className="flex gap-2">
             <button
               onClick={() => { deletePostMutation.mutate(post.id) }}
               className="bg-red-500 text-white px-4 py-2 rounded"
@@ -47,7 +47,7 @@ export const component = function Home() {
             >
               Edit
             </Link>
-          </div>
+          </div> */}
         </div>
       ))}
     </div>
