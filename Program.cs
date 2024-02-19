@@ -23,12 +23,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR();
 
-
-
 var app = builder.Build();
-
-
-app.MapHub<PostHub>("/api/posthub");
 
 
 if (app.Environment.IsDevelopment())
@@ -37,10 +32,9 @@ if (app.Environment.IsDevelopment())
   app.UseSwaggerUI();
 }
 
-
-
 app.MapControllers();
 
+app.MapHub<PostHub>("/r/postHub");
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapFallbackToFile("index.html");

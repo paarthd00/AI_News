@@ -6,9 +6,10 @@ import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
 export default defineConfig({
   server: {
     proxy: {
-      "/api": {
-        target: "http://localhost:5117",
-        changeOrigin: true,
+      "/api": "http://127.0.0.1:5117",
+      "/r": {
+        target: "http://127.0.0.1:5117",
+        ws: true,
       },
     },
   },

@@ -3,40 +3,35 @@ import { useQuery } from "@tanstack/react-query";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import * as signalR from "@microsoft/signalr";
 import { useEffect, useState } from "react";
+import useSignalR from "../use-signalR";
 export const component = function Home() {
+  
   const { isPending, error, data, refetch } = useQuery({
     queryKey: ["postData"],
     queryFn: getPosts,
   });
 
-  const [connection, setConnection] = useState(null);
+  const [posts, setPosts ] = useState(data);
 
+  const { connection } = useSignalR("/r/postHub");
+  console.log("connection", connection);
   useEffect(() => {
-    const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl("/api/posthub")
-      .build();
-
-    setConnection(newConnection);
-
-    setLoggedIn(localStorage.getItem("isAuthenticated") === "true");
-
-  }, []); // Initialize connection once 
-
-  useEffect(() => {
-    console.log("SignalR Connected");
-    if (connection) {
-      connection.start()
-        .then(() => {
-
-          connection.on("newPost", (newPost) => {
-            console.log("newPost", newPost);
-            // TanStack Query: Optimistically update the cache
-            refetch(); // Triggers a refetch
-          });
-        })
-        .catch(err => console.error(err));
+    if (!connection) {
+      return;
     }
-  }, [connection]); // Connect when the connection object is ready
+    // listen for messages from the server
+    connection.on("newpost", (post: Post) => {
+      setPosts((posts) => [...(posts || []), post]);
+    });
+
+    return () => {
+      connection.off("ReceiveMessage");
+    };
+  }, [connection]);
+
+  useEffect(() => {
+    setLoggedIn(localStorage.getItem("isAuthenticated") === "true");
+  }, []); // Initialize connection once 
 
   const [loggedIn, setLoggedIn] = useState(false);
   const { isAuthenticated, isLoading, login } = useKindeAuth();
@@ -61,7 +56,7 @@ export const component = function Home() {
       {loggedIn ? (
         <div>
           <div className="py-10 container">
-            {data?.map((post: Post) => (
+            {posts?.map((post: Post) => (
               <div key={post.id}>
                 <h2 className="text-md">{post.title}</h2>
                 <p>{post.createdAt}</p>

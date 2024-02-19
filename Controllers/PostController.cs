@@ -12,6 +12,7 @@ public class PostsController : ControllerBase
 {
     private readonly DatabaseContext _context;
     private readonly IHubContext<PostHub> _hubContext;
+
     public PostsController(DatabaseContext context, IHubContext<PostHub> hubContext)
     {
         _context = context;
@@ -43,8 +44,8 @@ public class PostsController : ControllerBase
     {
         _context.Posts.Add(Post);
         await _context.SaveChangesAsync();
-        await _hubContext.Clients.All.SendAsync("newPost", Post);
-        return CreatedAtAction(nameof(GetPostItem), new { id = Post.Id }, Post);
+        await _hubContext.Clients.All.SendAsync("NewPost", Post);
+        return CreatedAtAction(nameof(GetPostItems), new { id = Post.Id }, Post);
     }
 
     [HttpPut("{id}")]
