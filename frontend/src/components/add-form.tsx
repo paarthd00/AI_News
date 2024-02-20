@@ -76,6 +76,7 @@ export default function AddForm() {
               <FormLabel>Type</FormLabel>
               <FormControl>
                 <Input placeholder="Content" {...field} />
+            
               </FormControl>
               <FormDescription>Write Post content here...</FormDescription>
               <FormMessage />
@@ -84,6 +85,7 @@ export default function AddForm() {
         />
         <Button type="submit">Submit</Button>
       </form>
+      
     </Form>
   );
 }

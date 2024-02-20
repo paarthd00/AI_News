@@ -8,15 +8,25 @@ import { Route as rootRoute } from './routes/__root'
 
 // Create Virtual Routes
 
+const SinglePostComponentImport = createFileRoute('/single-post')()
 const ThreadsComponentImport = createFileRoute('/threads')()
 const SubmitComponentImport = createFileRoute('/submit')()
-const SinglePostComponentImport = createFileRoute('/single-post')()
 const NewComponentImport = createFileRoute('/new')()
 const EditComponentImport = createFileRoute('/edit')()
 const CommentsComponentImport = createFileRoute('/comments')()
 const IndexComponentImport = createFileRoute('/')()
 
 // Create/Update Routes
+
+const SinglePostComponentRoute = SinglePostComponentImport.update({
+  path: '/single-post',
+  getParentRoute: () => rootRoute,
+} as any).update({
+  component: lazyRouteComponent(
+    () => import('./routes/single-post.component'),
+    'component',
+  ),
+})
 
 const ThreadsComponentRoute = ThreadsComponentImport.update({
   path: '/threads',
@@ -34,16 +44,6 @@ const SubmitComponentRoute = SubmitComponentImport.update({
 } as any).update({
   component: lazyRouteComponent(
     () => import('./routes/submit.component'),
-    'component',
-  ),
-})
-
-const SinglePostComponentRoute = SinglePostComponentImport.update({
-  path: '/single-post',
-  getParentRoute: () => rootRoute,
-} as any).update({
-  component: lazyRouteComponent(
-    () => import('./routes/single-post.component'),
     'component',
   ),
 })
@@ -108,16 +108,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewComponentImport
       parentRoute: typeof rootRoute
     }
-    '/single-post': {
-      preLoaderRoute: typeof SinglePostComponentImport
-      parentRoute: typeof rootRoute
-    }
     '/submit': {
       preLoaderRoute: typeof SubmitComponentImport
       parentRoute: typeof rootRoute
     }
     '/threads': {
       preLoaderRoute: typeof ThreadsComponentImport
+      parentRoute: typeof rootRoute
+    }
+    '/single-post': {
+      preLoaderRoute: typeof SinglePostComponentImport
       parentRoute: typeof rootRoute
     }
   }
@@ -130,7 +130,7 @@ export const routeTree = rootRoute.addChildren([
   CommentsComponentRoute,
   EditComponentRoute,
   NewComponentRoute,
-  SinglePostComponentRoute,
   SubmitComponentRoute,
   ThreadsComponentRoute,
+  SinglePostComponentRoute,
 ])

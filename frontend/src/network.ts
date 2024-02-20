@@ -22,7 +22,7 @@ export async function createPost({
   title,
   content,
   authorId,
-  authorName
+  authorName,
 }: {
   title: string;
   content: string;

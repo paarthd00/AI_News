@@ -13,3 +13,7 @@ export const editSearchSchema = z.object({
   downvotes: z.number(),
   createdAt: z.string(),
 });
+
+export const singlePostSearchSchema = z.object({
+  id: z.string(),
+});

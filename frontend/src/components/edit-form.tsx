@@ -59,6 +59,7 @@ export default function EditForm({
       title: "",
       content: "",
       authorId: user?.id || "",
+      authorName: user?.given_name || "",
       createdAt: createdAt,
     };
     newPost.title = title;
