@@ -30,7 +30,7 @@ export const component = function Home() {
   useEffect(() => {
     if (isAuthenticated)  {
       refetch();
-   }
+    }
   }, [isAuthenticated]);
 
   if (isLoading) {
@@ -39,33 +39,48 @@ export const component = function Home() {
   if (isPending) return <div>Loading...</div>;
 
   if (error) return <div>Something went wrong</div>;
+  function calculateTimeDifference(referenceTimeString) {
+    const referenceTime = new Date(referenceTimeString);
+    const now = new Date();
+
+    const timeDiff = now - referenceTime; // Difference in milliseconds
+    const hours = timeDiff / (1000 * 60 * 60); // Convert milliseconds to hours
+
+    return Math.floor(hours); 
+  }
 
   return (
     <>
       {isAuthenticated? (
         <div>
           <div className="py-10 container">
-            {data?.map((post: Post) => {
+            {data?.map((post: Post, i:number) => {
               return (
-                <div key={post.id}>
-                  <h2 className="text-md">{post.title}</h2>
-                  <p>{post.createdAt}</p>
-                  <p>
-                    {post.upVotes} points by {post.authorName}
-                  </p>
+                <div className="flex flex-col bg-[#F6F6EF] p-3 "  key={post.id}>
+                  <div className="flex gap-2 items-center">
+                    <p>{i+1}.</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 32 16" width="32"><path d="m2 27 14-29 14 29z" fill="#999"/></svg>
+                    <h2 className="text-md">{post.title}</h2>
+                  </div>
+                  <div className="flex ps-2">
+                    <p className="text-[#828282]" >{calculateTimeDifference(post.createdAt)} hours ago</p>
+                    <p className="text-[#828282]">
+                      {post.upVotes} points by {post.authorName}
+                    </p>
+                  </div>
                 </div>
               )
             })}
           </div>
         </div>
       ) : (
-        <>
-          <p>Please sign in or register!</p>
-          <button onClick={() => login()} type="button">
-            Sign In
-          </button>
-        </>
-      )}
+          <>
+            <p>Please sign in or register!</p>
+            <button onClick={() => login()} type="button">
+              Sign In
+            </button>
+          </>
+        )}
     </>
   );
 };
