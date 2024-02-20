@@ -3,7 +3,7 @@ import Header from "@/components/header";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 export const Route = createRootRoute({
   component: () => {
-    const { user, isAuthenticated, login } = useKindeAuth();
+    const { user, isAuthenticated, login, logout } = useKindeAuth();
 
     return (
       <>
@@ -30,6 +30,9 @@ export const Route = createRootRoute({
               <div className="flex gap-2">
                 <p>{user?.given_name}</p>
                 <p>{user?.family_name}</p>
+                <button onClick={() => logout()} type="button">
+                  Sign Out
+                </button>
               </div>
             </div>
             <hr />
