@@ -8,8 +8,10 @@ export const Route = createRootRoute({
     const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
-      setLoggedIn(localStorage.getItem("isAuthenticated") === "true");
-      console.log("isAuthenticated", localStorage.getItem("isAuthenticated"));
+      if (localStorage.getItem("isAuthenticated")) {
+        setLoggedIn(localStorage.getItem("isAuthenticated") === "true");
+        console.log("isAuthenticated", localStorage.getItem("isAuthenticated"));
+      }
     }, []);
 
     useEffect(() => {

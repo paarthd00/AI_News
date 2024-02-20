@@ -5,13 +5,12 @@ import * as signalR from "@microsoft/signalr";
 import { useEffect, useState } from "react";
 import useSignalR from "../use-signalR";
 export const component = function Home() {
-  
+
   const { isPending, error, data, refetch } = useQuery({
     queryKey: ["postData"],
     queryFn: getPosts,
   });
 
-  const [posts, setPosts ] = useState(data);
 
   const { connection } = useSignalR("/r/postHub");
   console.log("connection", connection);
@@ -21,11 +20,13 @@ export const component = function Home() {
     }
     // listen for messages from the server
     connection.on("newpost", (post: Post) => {
-      setPosts((posts) => [...(posts || []), post]);
+      console.log("new post", post);
+      refetch();
+
     });
 
     return () => {
-      connection.off("ReceiveMessage");
+      connection.off("newpost");
     };
   }, [connection]);
 
@@ -56,7 +57,7 @@ export const component = function Home() {
       {loggedIn ? (
         <div>
           <div className="py-10 container">
-            {posts?.map((post: Post) => (
+            {data?.map((post: Post) => (
               <div key={post.id}>
                 <h2 className="text-md">{post.title}</h2>
                 <p>{post.createdAt}</p>
