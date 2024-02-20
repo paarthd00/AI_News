@@ -9,24 +9,28 @@ export const Route = createRootRoute({
       <>
         {isAuthenticated ? (
           <>
-            <div className="p-2 flex gap-2 items-center justify-center w-100">
-              <Link to="/" className="[&.active]:font-bold">
-                <Header />
-              </Link>{" "}
-              <Link to="/new" className="[&.active]:font-bold">
-                new {" | "}
-              </Link>
-              <Link to="/threads" className="[&.active]:font-bold">
-                threads {" | "}
-              </Link>
-              <Link to="/comments" className="[&.active]:font-bold">
-                comments {" | "}
-              </Link>
-              <Link to="/submit" className="[&.active]:font-bold">
-                submit
-              </Link>
-              <h2>{user?.given_name}</h2>
-              <p>{user?.family_name}</p>
+            <div className="p-2 bg-[#ff6600] flex gap-2 container items-center justify-between w-100 px-3">
+              <div className="flex gap-2 items-center ">
+                <Link to="/" className="[&.active]:font-bold">
+                  <Header />
+                </Link>
+                <Link to="/new" className="[&.active]:font-bold">
+                  new
+                </Link>
+                <Link to="/threads" className="[&.active]:font-bold">
+                  threads
+                </Link>
+                <Link to="/comments" className="[&.active]:font-bold">
+                  comments
+                </Link>
+                <Link to="/submit" className="[&.active]:font-bold">
+                  submit
+                </Link>
+              </div>
+              <div className="flex gap-2">
+                <p>{user?.given_name}</p>
+                <p>{user?.family_name}</p>
+              </div>
             </div>
             <hr />
             <Outlet />

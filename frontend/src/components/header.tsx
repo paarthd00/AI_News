@@ -2,6 +2,7 @@ export default function Header() {
   return (
     <div className="flex items-center gap-2">
       <svg
+        className="border border-[white]"
         xmlns="http://www.w3.org/2000/svg"
         height="18"
         viewBox="4 4 188 188"

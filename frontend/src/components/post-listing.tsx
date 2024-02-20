@@ -39,7 +39,7 @@ export default function PostListing(
 
     return (
         <div>
-            <div className="py-10 container">
+            <div className=" !px-0 container">
                 {posts.posts?.map((post: Post, i: number) => {
                     return (
                         <div className="flex flex-col bg-[#F6F6EF] p-3 " key={post.id}>
