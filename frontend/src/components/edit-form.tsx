@@ -58,6 +58,8 @@ export default function EditForm({
       id: postId,
       title: "",
       content: "",
+      upVotes: 0,
+      downVotes: 0,
       authorId: user?.id || "",
       authorName: user?.given_name || "",
       createdAt: createdAt,

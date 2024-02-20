@@ -17,3 +17,14 @@ export const editSearchSchema = z.object({
 export const singlePostSearchSchema = z.object({
   id: z.string(),
 });
+
+export const postSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  content: z.string(),
+  authorId: z.string(),
+  authorName: z.string(),
+  upVotes: z.number(),
+  downVotes: z.number(),
+  createdAt: z.string(),
+});

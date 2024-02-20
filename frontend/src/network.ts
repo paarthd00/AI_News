@@ -4,8 +4,8 @@ export type Post = {
   content: string;
   authorId: string;
   authorName: string;
-  upVotes?: number;
-  downVotes?: number;
+  upVotes: number;
+  downVotes: number;
   createdAt: string;
 };
 
