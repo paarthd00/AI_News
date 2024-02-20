@@ -1,28 +1,13 @@
 import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
 import Header from "@/components/header";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
-import { useState, useEffect } from "react";
 export const Route = createRootRoute({
   component: () => {
     const { user, isAuthenticated, login } = useKindeAuth();
-    const [loggedIn, setLoggedIn] = useState(false);
 
-    useEffect(() => {
-      if (localStorage.getItem("isAuthenticated")) {
-        setLoggedIn(localStorage.getItem("isAuthenticated") === "true");
-        console.log("isAuthenticated", localStorage.getItem("isAuthenticated"));
-      }
-    }, []);
-
-    useEffect(() => {
-      if (isAuthenticated) {
-        // set cookies for the user so on refresh they are still authenticated
-        localStorage.setItem("isAuthenticated", "true");
-      }
-    }, [isAuthenticated]);
     return (
       <>
-        {loggedIn ? (
+        {isAuthenticated ? (
           <>
             <div className="p-2 flex gap-2 items-center justify-center w-100">
               <Link to="/" className="[&.active]:font-bold">

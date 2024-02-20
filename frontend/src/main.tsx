@@ -24,6 +24,7 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <KindeProvider
+        isDangerouslyUseLocalStorage={process.env.NODE_ENV === 'development'}
         clientId={import.meta.env.VITE_KINDE_CLIENT_ID}
         domain={import.meta.env.VITE_KINDE_DOMAIN}
         logoutUri={window.location.origin}

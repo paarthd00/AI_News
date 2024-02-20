@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { createPost } from "@/network";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
+
 export default function AddForm() {
   const Navigate = useNavigate();
 
@@ -40,8 +41,9 @@ export default function AddForm() {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const { title, content } = values;
     const authorId = user?.id || "";
+    const authorName = user?.given_name  || "";
     try {
-      addPostMutation.mutate({ title, content, authorId });
+      addPostMutation.mutate({ title, content, authorId, authorName });
     } catch (error) {
       alert("Error creating milk");
     } finally {

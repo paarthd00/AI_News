@@ -3,6 +3,7 @@ export type Post = {
   title: string;
   content: string;
   authorId: string;
+  authorName: string;
   upVotes?: number;
   downVotes?: number;
   createdAt: string;
@@ -21,17 +22,19 @@ export async function createPost({
   title,
   content,
   authorId,
+  authorName
 }: {
   title: string;
   content: string;
   authorId: string;
+  authorName: string;
 }) {
   const milk = await fetch("/api/posts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title, content, authorId }),
+    body: JSON.stringify({ title, content, authorId, authorName }),
   }).then((response) => response.json());
   return milk;
 }
@@ -44,7 +47,7 @@ export async function updatePost({
   newPost: Post;
 }) {
   console.log("updateMilk", id, newPost);
-  let resp = await fetch(`/api/posts/${id}`, {
+  const resp = await fetch(`/api/posts/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
