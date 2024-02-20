@@ -5,11 +5,8 @@ export const Route = createFileRoute("/single-post")({
   validateSearch: singlePostSearchSchema,
 });
 
-
 export const component = function SinglePost() {
-  const {
-    id
-  } = Route.useSearch();
+  const { id } = Route.useSearch();
 
   const { isPending, error, data } = useQuery({
     queryKey: ["singlePost", id],

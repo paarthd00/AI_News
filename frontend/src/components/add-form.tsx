@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
-import { Textarea } from "@/components/ui/textarea"
+import { Textarea } from "@/components/ui/textarea";
 
 import {
   Form,
@@ -55,7 +55,10 @@ export default function AddForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="py-10 space-y-10">
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="py-10 space-y-10"
+      >
         <FormField
           control={form.control}
           name="title"
@@ -86,7 +89,6 @@ export default function AddForm() {
         />
         <Button type="submit">Submit</Button>
       </form>
-
     </Form>
   );
 }
