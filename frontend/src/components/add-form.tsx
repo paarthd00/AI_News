@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
+import { Textarea } from "@/components/ui/textarea"
+
 import {
   Form,
   FormControl,
@@ -41,7 +43,7 @@ export default function AddForm() {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const { title, content } = values;
     const authorId = user?.id || "";
-    const authorName = user?.given_name  || "";
+    const authorName = user?.given_name || "";
     try {
       addPostMutation.mutate({ title, content, authorId, authorName });
     } catch (error) {
@@ -53,13 +55,13 @@ export default function AddForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="py-10 space-y-10">
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Type</FormLabel>
+              <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input placeholder="Title" {...field} />
               </FormControl>
@@ -73,10 +75,9 @@ export default function AddForm() {
           name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Type</FormLabel>
+              <FormLabel>Content</FormLabel>
               <FormControl>
-                <Input placeholder="Content" {...field} />
-            
+                <Textarea placeholder="Content" {...field} />
               </FormControl>
               <FormDescription>Write Post content here...</FormDescription>
               <FormMessage />
@@ -85,7 +86,7 @@ export default function AddForm() {
         />
         <Button type="submit">Submit</Button>
       </form>
-      
+
     </Form>
   );
 }

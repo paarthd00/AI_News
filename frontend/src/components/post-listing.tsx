@@ -8,8 +8,6 @@ import { updatePost } from "@/network"
 export default function PostListing(
     posts: any
 ) {
-    console.log(posts.posts)
-
     const updatePostMutation = useMutation({
         mutationFn: updatePost,
         onSettled: () => queryClient.invalidateQueries({ queryKey: ["postData"] }),
