@@ -44,7 +44,7 @@ public class PostsController : ControllerBase
     {
         _context.Posts.Add(Post);
         await _context.SaveChangesAsync();
-        await _hubContext.Clients.All.SendAsync("NewPost", Post);
+        await _hubContext.Clients.All.SendAsync("newpost", Post);
         return CreatedAtAction(nameof(GetPostItems), new { id = Post.Id }, Post);
     }
 
@@ -58,7 +58,7 @@ public class PostsController : ControllerBase
 
         _context.Entry(Post).State = EntityState.Modified;
         await _context.SaveChangesAsync();
-
+        await _hubContext.Clients.All.SendAsync("updatepost", Post);
         return NoContent();
     }
 
