@@ -52,6 +52,10 @@ namespace AINews.Migrations
                     b.Property<int>("UpVotes")
                         .HasColumnType("int");
 
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.ToTable("Posts");

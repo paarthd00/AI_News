@@ -32,6 +32,7 @@ export default function AddForm() {
     defaultValues: {
       title: "",
       content: "",
+      url:"",
     },
   });
 
@@ -41,11 +42,11 @@ export default function AddForm() {
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    const { title, content } = values;
+    const { title, content,url } = values;
     const authorId = user?.id || "";
     const authorName = user?.given_name || "";
     try {
-      addPostMutation.mutate({ title, content, authorId, authorName });
+      addPostMutation.mutate({ title, content, url, authorId, authorName });
     } catch (error) {
       alert("Error creating milk");
     } finally {
@@ -69,6 +70,20 @@ export default function AddForm() {
                 <Input placeholder="Title" {...field} />
               </FormControl>
               <FormDescription>Write post title here...</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="url"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Url</FormLabel>
+              <FormControl>
+                <Input placeholder="Url" {...field} />
+              </FormControl>
+              <FormDescription>Add external url here</FormDescription>
               <FormMessage />
             </FormItem>
           )}

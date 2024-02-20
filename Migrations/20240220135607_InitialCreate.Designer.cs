@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AINews.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240220083612_InitialCreate")]
+    [Migration("20240220135607_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -54,6 +54,10 @@ namespace AINews.Migrations
 
                     b.Property<int>("UpVotes")
                         .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 

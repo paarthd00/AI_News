@@ -58,6 +58,7 @@ export default function EditForm({
       id: postId,
       title: "",
       content: "",
+      url: "",
       upVotes: 0,
       downVotes: 0,
       authorId: user?.id || "",

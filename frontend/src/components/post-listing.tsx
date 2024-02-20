@@ -4,7 +4,7 @@ import { calculateTimeDifference } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
 import { updatePost } from "@/network";
-
+import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 export default function PostListing(
   { posts }: { posts: Post[] }
 ) {
@@ -13,11 +13,14 @@ export default function PostListing(
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["postData"] }),
   });
 
+  const { user } = useKindeAuth();
+
   const updatePostHandler = (post: Post) => {
     const newPost: Post = {
       id: post.id,
       title: post.title,
       content: post.content,
+      url: post.url,
       upVotes: post.upVotes + 1,
       downVotes: post.downVotes,
       authorId: post.authorId,
@@ -54,14 +57,33 @@ export default function PostListing(
                     <path d="m2 27 14-29 14 29z" fill="#999" />
                   </svg>
                 </button>
-                <Link
-                  to="/single-post"
-                  search={{
-                    id: post.id,
-                  }}
-                >
-                  <h2 className="text-md">{post.title}</h2>
-                </Link>
+                {
+                  post.url ? (
+                    <a href={post.url} target="_blank" rel="noreferrer">
+                      <h2 className="text-md">{post.title}</h2>
+                    </a>
+                  ) : (
+                    <Link
+                      to="/single-post"
+                      search={{
+                        id: post.id,
+                      }}
+                    >
+                      <h2 className="text-md">{post.title}</h2>
+                    </Link>
+                  )
+                }
+                {
+                  user?.id === post.authorId &&
+                  <Link
+                    to="/single-post"
+                    search={{
+                      id: post.id,
+                    }}
+                  >
+                    details
+                  </Link>
+                }
               </div>
               <div className="flex ps-2">
                 <p className="text-[#828282]">
@@ -69,8 +91,6 @@ export default function PostListing(
                   {calculateTimeDifference(post.createdAt)} hours ago by{" "}
                   {post.authorName}
                 </p>
-
-                
               </div>
             </div>
           );

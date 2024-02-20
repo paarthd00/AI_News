@@ -75,7 +75,6 @@ public class PostsController : ControllerBase
         {
             _context.Posts.Remove(PostItem);
             await _context.SaveChangesAsync();
-
         }
         catch (DbUpdateException)
         {

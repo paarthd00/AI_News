@@ -2,6 +2,7 @@ export type Post = {
   id: number;
   title: string;
   content: string;
+  url: string;
   authorId: string;
   authorName: string;
   upVotes: number;
@@ -21,11 +22,13 @@ export async function deletePost(id: number) {
 export async function createPost({
   title,
   content,
+  url,
   authorId,
   authorName,
 }: {
   title: string;
   content: string;
+  url: string;
   authorId: string;
   authorName: string;
 }) {
@@ -34,7 +37,7 @@ export async function createPost({
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title, content, authorId, authorName }),
+    body: JSON.stringify({ title, content, url, authorId, authorName }),
   }).then((response) => response.json());
   return milk;
 }
