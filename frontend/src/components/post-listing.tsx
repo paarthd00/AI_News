@@ -47,16 +47,19 @@ export default function PostListing(
             <div className="flex flex-col bg-[#F6F6EF] p-3 " key={post.id}>
               <div className="flex gap-2 items-center">
                 <p>{i + 1}.</p>
-                <button onClick={() => updatePostHandler(post)}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="16"
-                    viewBox="0 0 32 16"
-                    width="32"
-                  >
-                    <path d="m2 27 14-29 14 29z" fill="#999" />
-                  </svg>
-                </button>
+                {
+                  user?.id !== post.authorId &&
+                  <button onClick={() => updatePostHandler(post)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="16"
+                      viewBox="0 0 32 16"
+                      width="32"
+                    >
+                      <path d="m2 27 14-29 14 29z" fill="#999" />
+                    </svg>
+                  </button>
+                }
                 {
                   post.url ? (
                     <a href={post.url} target="_blank" rel="noreferrer">

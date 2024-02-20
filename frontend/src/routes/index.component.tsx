@@ -25,6 +25,11 @@ export const component = function Home() {
     connection.on("updatepost", () => {
       refetch();
     });
+    
+    connection.on("deletepost", () => {
+      refetch();
+    });
+
 
     return () => {
       connection.off("newpost");

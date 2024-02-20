@@ -75,6 +75,7 @@ public class PostsController : ControllerBase
         {
             _context.Posts.Remove(PostItem);
             await _context.SaveChangesAsync();
+            await _hubContext.Clients.All.SendAsync("deletepost", id);
         }
         catch (DbUpdateException)
         {
