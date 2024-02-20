@@ -42,6 +42,7 @@ export const component = function Home() {
 
   if (error) return <div>Something went wrong</div>;
 
+
   return (
     <>
       {isAuthenticated ? (

@@ -5,7 +5,9 @@ import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
 import { updatePost } from "@/network";
 
-export default function PostListing(posts: any) {
+export default function PostListing(
+  { posts }: { posts: Post[] }
+) {
   const updatePostMutation = useMutation({
     mutationFn: updatePost,
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["postData"] }),
@@ -37,7 +39,7 @@ export default function PostListing(posts: any) {
   return (
     <div>
       <div className=" !px-0 container">
-        {posts.posts?.map((post: Post, i: number) => {
+        {posts.map((post: Post, i: number) => {
           return (
             <div className="flex flex-col bg-[#F6F6EF] p-3 " key={post.id}>
               <div className="flex gap-2 items-center">
