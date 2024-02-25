@@ -3,10 +3,22 @@ using Microsoft.EntityFrameworkCore;
 using AINews.Models;
 using Microsoft.AspNetCore.SignalR;
 using AINews.Hubs;
+
+
+using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+
 namespace AINews.Controllers;
+
+
 
 [ApiController]
 [Route("api/[controller]")]
+
+
 
 public class PostsController : ControllerBase
 {
@@ -84,4 +96,32 @@ public class PostsController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpPost("completepost")]
+    public async Task<ActionResult<string>> Chat(ChatRequest request)
+    {
+        var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
+        var requestBody = new StringContent(JsonConvert.SerializeObject(new
+        {
+            model = "gpt-3.5-turbo-instruct",
+            prompt = request.Prompt,
+            max_tokens = request.MaxTokens,
+            temperature = request.Temperature
+        }), Encoding.UTF8, "application/json");
+
+        var response = await httpClient.PostAsync("https://api.openai.com/v1/completions", requestBody);
+
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        return Ok(responseBody);
+    }
+
+}
+
+public class ChatRequest
+{
+    public string Prompt { get; set; }
+    public int MaxTokens { get; set; }
+    public double Temperature { get; set; }
 }
