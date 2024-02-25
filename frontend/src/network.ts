@@ -32,14 +32,14 @@ export async function createPost({
   authorId: string;
   authorName: string;
 }) {
-  const milk = await fetch("/api/posts", {
+  const newsPostResponse = await fetch("/api/posts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ title, content, url, authorId, authorName }),
   }).then((response) => response.json());
-  return milk;
+  return newsPostResponse;
 }
 
 export async function updatePost({
@@ -49,7 +49,6 @@ export async function updatePost({
   id: number;
   newPost: Post;
 }) {
-  console.log("updateMilk", id, newPost);
   const resp = await fetch(`/api/posts/${id}`, {
     method: "PUT",
     headers: {

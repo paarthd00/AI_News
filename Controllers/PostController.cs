@@ -3,22 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using AINews.Models;
 using Microsoft.AspNetCore.SignalR;
 using AINews.Hubs;
-
-
-using System;
-using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace AINews.Controllers;
 
-
-
 [ApiController]
 [Route("api/[controller]")]
-
-
 
 public class PostsController : ControllerBase
 {
@@ -110,7 +101,7 @@ public class PostsController : ControllerBase
             temperature = request.Temperature
         }), Encoding.UTF8, "application/json");
 
-        var response = await httpClient.PostAsync("https://api.openai.com/v1/completions", requestBody);
+        var response = await httpClient.PostAsync(Environment.GetEnvironmentVariable("OPENAI_API_ENDPOINT"), requestBody);
 
         var responseBody = await response.Content.ReadAsStringAsync();
 
