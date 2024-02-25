@@ -15,6 +15,7 @@ A real-time, AI-enhanced news aggregator inspired by Hacker News, where AI assis
 * **asynchronous state management:** TanStack Query
 * **Routing:** TanStack Router
 * **Component Library:** shdcn
+* **Authentication:** Kinde
 * **Validation:** ZOD
 * **Backend:** C# 
 * **AI integration:** gpt-3.5-turbo-instruct
