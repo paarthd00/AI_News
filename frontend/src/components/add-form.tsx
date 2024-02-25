@@ -8,10 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 
@@ -81,7 +79,6 @@ export default function AddForm() {
       alert("Error getting ai help");
     }
   }
-
 
   return (
     <>

@@ -4,7 +4,6 @@ import {
   HubConnectionBuilder,
   LogLevel,
 } from "@microsoft/signalr";
-import * as signalR from "@microsoft/signalr";
 export default function useSignalR(url: string) {
   const [connection, setConnection] = useState<HubConnection | undefined>(
     undefined,

@@ -5,19 +5,27 @@ using AINews.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load();
 
-var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
-var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
+var PGHOST = Environment.GetEnvironmentVariable("PGHOST");
+var PGDATABASE = Environment.GetEnvironmentVariable("PGDATABASE");
+var PGUSER = Environment.GetEnvironmentVariable("PGUSER");
+var PGPASSWORD = Environment.GetEnvironmentVariable("PGPASSWORD");
+var connectionString = $"Host={PGHOST};Database={PGDATABASE};Username={PGUSER};Password={PGPASSWORD}";
 
 builder.Services.AddDbContext<DatabaseContext>(
     opt =>
     {
-      opt
-      .UseMySql(connectionString, serverVersion);
+      opt.UseNpgsql(connectionString);
+      if (builder.Environment.IsDevelopment())
+      {
+        opt
+          .LogTo(Console.WriteLine, LogLevel.Information)
+          .EnableSensitiveDataLogging()
+          .EnableDetailedErrors();
+      }
     }
 );
 
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
