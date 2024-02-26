@@ -12,8 +12,13 @@ A real-time, AI-enhanced news aggregator inspired by Hacker News, where AI assis
 ## Technical Aspects
 
 * **Frontend:** ReactJS
+* **asynchronous state management:** TanStack Query
+* **Routing:** TanStack Router
+* **Component Library:** shdcn
+* **Authentication:** Kinde
+* **Validation:** ZOD
 * **Backend:** C# 
-* **AI integration:** Large language models (LLMs) from the Gemini family 
+* **AI integration:** gpt-3.5-turbo-instruct
 * **Socket Technology:** SignalR
 
 ## User Experience
