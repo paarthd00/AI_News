@@ -21,8 +21,6 @@ export default function PostListing(
       title: post.title,
       content: post.content,
       url: post.url,
-      upVotes: post.upVotes + 1,
-      downVotes: post.downVotes,
       authorId: post.authorId,
       authorName: post.authorName,
       createdAt: post.createdAt,
@@ -90,7 +88,6 @@ export default function PostListing(
               </div>
               <div className="flex ps-2">
                 <p className="text-[#828282]">
-                  {post.upVotes} points{" "}
                   {calculateTimeDifference(post.createdAt)} hours ago by{" "}
                   {post.authorName}
                 </p>

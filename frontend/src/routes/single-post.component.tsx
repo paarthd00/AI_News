@@ -15,7 +15,7 @@ export const component = function SinglePost() {
     queryKey: ["singlePost", id],
     queryFn: async ({ queryKey }) => {
       const [_, id] = queryKey;
-      const result = await fetch(`/api/posts/${id}`);
+      const result = await fetch(`/api/AIPosts/${id}`);
       return await result.json();
     },
   });

@@ -1,6 +1,7 @@
 namespace AINews.Models;
 
-public class Post
+
+public class AIPost
 {
   public int Id { get; set; }
 
@@ -13,10 +14,6 @@ public class Post
   public string AuthorId { get; set; } = "";
 
   public string AuthorName { get; set; } = "";
-
-  public int UpVotes { get; set; }
-
-  public int DownVotes { get; set; }
 
   public DateTime CreatedAt { get; set; }
 }

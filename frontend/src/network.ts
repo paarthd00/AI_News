@@ -5,18 +5,16 @@ export type Post = {
   url: string;
   authorId: string;
   authorName: string;
-  upVotes: number;
-  downVotes: number;
   createdAt: string;
 };
 
 export async function getPosts() {
-  const result = await fetch("/api/Posts");
+  const result = await fetch("/api/AIPosts");
   return await result.json();
 }
 
 export async function deletePost(id: number) {
-  await fetch(`/api/Posts/${id}`, { method: "DELETE" });
+  await fetch(`/api/AIPosts/${id}`, { method: "DELETE" });
 }
 
 export async function createPost({
@@ -32,7 +30,7 @@ export async function createPost({
   authorId: string;
   authorName: string;
 }) {
-  const newsPostResponse = await fetch("/api/posts", {
+  const newsPostResponse = await fetch("/api/AIPosts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -49,7 +47,7 @@ export async function updatePost({
   id: number;
   newPost: Post;
 }) {
-  const resp = await fetch(`/api/posts/${id}`, {
+  const resp = await fetch(`/api/AIPosts/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

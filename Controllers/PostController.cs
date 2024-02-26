@@ -11,64 +11,64 @@ namespace AINews.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 
-public class PostsController : ControllerBase
+public class AIPostsController : ControllerBase
 {
     private readonly DatabaseContext _context;
     private readonly IHubContext<PostHub> _hubContext;
 
-    public PostsController(DatabaseContext context, IHubContext<PostHub> hubContext)
+    public AIPostsController(DatabaseContext context, IHubContext<PostHub> hubContext)
     {
         _context = context;
         _hubContext = hubContext;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Post>>> GetPostItems()
+    public async Task<ActionResult<IEnumerable<AIPost>>> GetPostItems()
     {
-        return await _context.Posts.ToListAsync();
+        return await _context.AIPosts.ToListAsync();
     }
 
     // /api/Posts/27
     [HttpGet("{id}")]
-    public async Task<ActionResult<Post>> GetPostItem(int id)
+    public async Task<ActionResult<AIPost>> GetPostItem(int id)
     {
-        var PostItem = await _context.Posts.FindAsync(id);
+        var AIPostItem = await _context.AIPosts.FindAsync(id);
 
-        if (PostItem == null)
+        if (AIPostItem == null)
         {
             return NotFound();
         }
 
-        return PostItem;
+        return AIPostItem;
     }
 
     [HttpPost]
-    public async Task<ActionResult<Post>> PostPostItem(Post Post)
+    public async Task<ActionResult<AIPost>> PostPostItem(AIPost AIPost)
     {
-        _context.Posts.Add(Post);
+        _context.AIPosts.Add(AIPost);
         await _context.SaveChangesAsync();
-        await _hubContext.Clients.All.SendAsync("newpost", Post);
-        return CreatedAtAction(nameof(GetPostItems), new { id = Post.Id }, Post);
+        await _hubContext.Clients.All.SendAsync("newpost", AIPost);
+        return CreatedAtAction(nameof(GetPostItems), new { id = AIPost.Id }, AIPost);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutPostItem(int id, Post Post)
+    public async Task<IActionResult> PutPostItem(int id, AIPost AIPost)
     {
-        if (id != Post.Id)
+        if (id != AIPost.Id)
         {
             return BadRequest();
         }
 
-        _context.Entry(Post).State = EntityState.Modified;
+        _context.Entry(AIPost).State = EntityState.Modified;
         await _context.SaveChangesAsync();
-        await _hubContext.Clients.All.SendAsync("updatepost", Post);
+        await _hubContext.Clients.All.SendAsync("updatepost", AIPost);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePostItem(int id)
     {
-        var PostItem = await _context.Posts.FindAsync(id);
+        var PostItem = await _context.AIPosts.FindAsync(id);
         if (PostItem == null)
         {
             return NotFound();
@@ -76,7 +76,7 @@ public class PostsController : ControllerBase
 
         try
         {
-            _context.Posts.Remove(PostItem);
+            _context.AIPosts.Remove(PostItem);
             await _context.SaveChangesAsync();
             await _hubContext.Clients.All.SendAsync("deletepost", id);
         }
@@ -112,7 +112,7 @@ public class PostsController : ControllerBase
 
 public class ChatRequest
 {
-    public string Prompt { get; set; }
+    public string Prompt { get; set; } = "";
     public int MaxTokens { get; set; }
     public double Temperature { get; set; }
 }
