@@ -5,6 +5,24 @@ export const Route = createRootRoute({
   component: () => {
     const { user, isAuthenticated, login, logout } = useKindeAuth();
 
+    const loginRegisterUser = async () => {
+
+      if (user?.id && user.given_name) {
+
+        const userId = user.id;
+        const userName = user.given_name;
+
+        const response = await fetch(`/api/Users/${userId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, userName }),
+        }).then((response) => response.json());
+        return response;
+      }
+    }
+
     return (
       <>
         {isAuthenticated ? (
@@ -39,7 +57,10 @@ export const Route = createRootRoute({
             <Outlet />
           </>
         ) : (
-          <button onClick={() => login()} type="button">
+          <button onClick={() => {
+            login();
+            loginRegisterUser();
+          }} type="button">
             Sign In
           </button>
         )}

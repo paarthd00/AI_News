@@ -36,12 +36,18 @@ public class UsersController : ControllerBase
         return AIPostItem;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<User>> PostPostItem(User User)
+    [HttpPost("{userId}")]
+    public async Task<ActionResult<User>> PostPostItem(string userId, User User)
     {
+        if (await _context.Users.AnyAsync(x => x.UserId == userId))
+        {
+            return Conflict();
+        }
+        User.Id = Guid.NewGuid().ToString();
         _context.Users.Add(User);
-        
+
         await _context.SaveChangesAsync();
+
         return CreatedAtAction(nameof(GetUsers), new { id = User.Id }, User);
     }
 }

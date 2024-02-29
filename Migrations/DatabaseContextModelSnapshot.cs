@@ -63,7 +63,7 @@ namespace AINews.Migrations
                         .HasColumnType("text")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
-                    b.Property<string>("PostId")
+                    b.Property<string>("AIPostId")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -76,7 +76,7 @@ namespace AINews.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex("AIPostId");
 
                     b.HasIndex("UserId");
 
@@ -106,8 +106,9 @@ namespace AINews.Migrations
             modelBuilder.Entity("AINews.Models.AIPost", b =>
                 {
                     b.HasOne("AINews.Models.User", "User")
-                        .WithMany("AIPost")
-                        .HasForeignKey("UserId");
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });
@@ -115,13 +116,13 @@ namespace AINews.Migrations
             modelBuilder.Entity("AINews.Models.PostUser", b =>
                 {
                     b.HasOne("AINews.Models.AIPost", "AIPost")
-                        .WithMany("PostUsers")
-                        .HasForeignKey("PostId")
+                        .WithMany()
+                        .HasForeignKey("AIPostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AINews.Models.User", "User")
-                        .WithMany("PostUsers")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -129,18 +130,6 @@ namespace AINews.Migrations
                     b.Navigation("AIPost");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("AINews.Models.AIPost", b =>
-                {
-                    b.Navigation("PostUsers");
-                });
-
-            modelBuilder.Entity("AINews.Models.User", b =>
-                {
-                    b.Navigation("AIPost");
-
-                    b.Navigation("PostUsers");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AINews.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,7 @@ namespace AINews.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     Url = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP(6)")
                 },
                 constraints: table =>
@@ -56,14 +56,14 @@ namespace AINews.Migrations
                     Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     Value = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    PostId = table.Column<string>(type: "text", nullable: false)
+                    AIPostId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PostUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostUsers_AIPosts_PostId",
-                        column: x => x.PostId,
+                        name: "FK_PostUsers_AIPosts_AIPostId",
+                        column: x => x.AIPostId,
                         principalTable: "AIPosts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -81,9 +81,9 @@ namespace AINews.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostUsers_PostId",
+                name: "IX_PostUsers_AIPostId",
                 table: "PostUsers",
-                column: "PostId");
+                column: "AIPostId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PostUsers_UserId",

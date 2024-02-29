@@ -50,7 +50,7 @@ export const component = function Home() {
   if (error) return <div>Something went wrong</div>;
 
   // Sort posts by date
-  // @ts-ignore
+  //  @ts-ignore
   data = data.sort((a: Post, b: Post) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (

@@ -10,14 +10,14 @@ export const formSchema = z.object({
   url: z.string(),
 });
 
-export const editSearchSchema = z.object({
-  id: z.number(),
-  title: z.string(),
-  content: z.string(),
-  upvotes: z.number(),
-  downvotes: z.number(),
-  createdAt: z.string(),
-});
+// export const editSearchSchema = z.object({
+//   id: z.string(),
+//   title: z.string(),
+//   content: z.string(),
+//   upvotes: z.number(),
+//   downvotes: z.number(),
+//   createdAt: z.string(),
+// });
 
 export const singlePostSearchSchema = z.object({
   id: z.string(),

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import useSignalR from "../use-signalR";
 
 import PostListing from "@/components/post-listing";
+
 export const component = function Home() {
   const { isPending, error, data, refetch } = useQuery({
     queryKey: ["postData"],
@@ -25,21 +26,42 @@ export const component = function Home() {
     connection.on("updatepost", () => {
       refetch();
     });
-    
+
     connection.on("deletepost", () => {
       refetch();
     });
-
 
     return () => {
       connection.off("newpost");
     };
   }, [connection]);
 
-  const { isAuthenticated, isLoading, login } = useKindeAuth();
+  const { isAuthenticated, isLoading, login, user } = useKindeAuth();
+
+
+  console.log("user: ", user);
+  const loginRegisterUser = async () => {
+
+    if (user?.id && user.given_name) {
+
+      const userId = user.id;
+      const userName = user.given_name;
+      
+      console.log("userId: ", userId);
+      const response = await fetch("/api/Users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ "id": userId, "User": { userId, userName } }),
+      }).then((response) => response.json());
+      return response;
+    }
+  }
 
   useEffect(() => {
     if (isAuthenticated) {
+      loginRegisterUser();
       refetch();
     }
   }, [isAuthenticated]);
@@ -51,7 +73,6 @@ export const component = function Home() {
 
   if (error) return <div>Something went wrong</div>;
 
-
   return (
     <>
       {isAuthenticated ? (
@@ -59,7 +80,10 @@ export const component = function Home() {
       ) : (
         <>
           <p>Please sign in or register!</p>
-          <button onClick={() => login()} type="button">
+          <button onClick={() => {
+            login();
+            loginRegisterUser();
+          }} type="button">
             Sign In
           </button>
         </>
