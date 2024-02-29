@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AINews.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240229042518_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240229114925_updateAiposts")]
+    partial class updateAiposts
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,12 +23,15 @@ namespace AINews.Migrations
                 .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "uuid-ossp");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("AINews.Models.AIPost", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -47,7 +50,6 @@ namespace AINews.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -60,7 +62,9 @@ namespace AINews.Migrations
             modelBuilder.Entity("AINews.Models.PostUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<string>("PostId")
                         .IsRequired()
@@ -85,7 +89,9 @@ namespace AINews.Migrations
             modelBuilder.Entity("AINews.Models.User", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -104,9 +110,7 @@ namespace AINews.Migrations
                 {
                     b.HasOne("AINews.Models.User", "User")
                         .WithMany("AIPost")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

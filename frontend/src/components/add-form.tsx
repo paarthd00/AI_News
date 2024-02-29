@@ -47,12 +47,11 @@ export default function AddForm() {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const { title, content, url } = values;
-    const authorId = user?.id || "";
-    const authorName = user?.given_name || "";
+    const userId = user?.id || "";
     try {
-      addPostMutation.mutate({ title, content, url, authorId, authorName });
+      addPostMutation.mutate({ title, content, url, userId});
     } catch (error) {
-      alert("Error creating milk");
+      alert("Error creating post");
     } finally {
       Navigate({ to: "/" });
     }
