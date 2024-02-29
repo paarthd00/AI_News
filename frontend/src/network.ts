@@ -1,10 +1,9 @@
 export type Post = {
-  id: number;
+  id: string;
   title: string;
   content: string;
   url: string;
-  authorId: string;
-  authorName: string;
+  userId: string;
   createdAt: string;
 };
 
@@ -21,21 +20,19 @@ export async function createPost({
   title,
   content,
   url,
-  authorId,
-  authorName,
+  userId,
 }: {
   title: string;
   content: string;
   url: string;
-  authorId: string;
-  authorName: string;
+  userId: string;
 }) {
   const newsPostResponse = await fetch("/api/AIPosts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title, content, url, authorId, authorName }),
+    body: JSON.stringify({ title, content, url, userId }),
   }).then((response) => response.json());
   return newsPostResponse;
 }
@@ -44,7 +41,7 @@ export async function updatePost({
   id,
   newPost,
 }: {
-  id: number;
+  id: string;
   newPost: Post;
 }) {
   const resp = await fetch(`/api/AIPosts/${id}`, {
