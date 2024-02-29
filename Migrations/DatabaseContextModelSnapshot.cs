@@ -24,18 +24,7 @@ namespace AINews.Migrations
 
             modelBuilder.Entity("AINews.Models.AIPost", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AuthorId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("AuthorName")
-                        .IsRequired()
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
                     b.Property<string>("Content")
@@ -52,10 +41,15 @@ namespace AINews.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Url")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("AIPosts");
                 });
@@ -65,16 +59,22 @@ namespace AINews.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("integer");
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Value")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("PostUsers");
                 });
@@ -95,6 +95,48 @@ namespace AINews.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("AINews.Models.AIPost", b =>
+                {
+                    b.HasOne("AINews.Models.User", "User")
+                        .WithMany("AIPost")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AINews.Models.PostUser", b =>
+                {
+                    b.HasOne("AINews.Models.AIPost", "AIPost")
+                        .WithMany("PostUsers")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AINews.Models.User", "User")
+                        .WithMany("PostUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AIPost");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AINews.Models.AIPost", b =>
+                {
+                    b.Navigation("PostUsers");
+                });
+
+            modelBuilder.Entity("AINews.Models.User", b =>
+                {
+                    b.Navigation("AIPost");
+
+                    b.Navigation("PostUsers");
                 });
 #pragma warning restore 612, 618
         }

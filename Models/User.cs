@@ -7,4 +7,8 @@ public class User
     public string UserId { get; set; } = "";
 
     public string UserName { get; set; } = "";
+
+    public ICollection<PostUser>? PostUsers { get; set; }
+
+    public ICollection<AIPost>? AIPost { get; set; }
 }

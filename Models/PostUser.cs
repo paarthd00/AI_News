@@ -1,14 +1,18 @@
 namespace AINews.Models;
 
+
 public class PostUser
 {
     public string Id { get; set; } = "";
 
-    public  PostUserValue Value { get; set; } = PostUserValue.NEUTRAL;
+    public PostUserValue Value { get; set; } = PostUserValue.NEUTRAL;
+    public required string UserId { get; set; }
+    public required User User { get; set; }
 
-    public int UserId { get; set; } = 0;
+    public string PostId { get; set; } = "";
 
-    public int PostId { get; set; } = 0;
+    public AIPost? AIPost { get; set; }
+
 }
 
 public enum PostUserValue

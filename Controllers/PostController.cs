@@ -52,7 +52,7 @@ public class AIPostsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutPostItem(int id, AIPost AIPost)
+    public async Task<IActionResult> PutPostItem(string id, AIPost AIPost)
     {
         if (id != AIPost.Id)
         {
@@ -66,7 +66,7 @@ public class AIPostsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeletePostItem(int id)
+    public async Task<IActionResult> DeletePostItem(string id)
     {
         var PostItem = await _context.AIPosts.FindAsync(id);
         if (PostItem == null)

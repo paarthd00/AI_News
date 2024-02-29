@@ -12,10 +12,28 @@ public class DatabaseContext : DbContext
 
   public DbSet<PostUser> PostUsers => Set<PostUser>();
 
+
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     modelBuilder.Entity<AIPost>()
         .Property(e => e.CreatedAt)
         .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+
+
+    modelBuilder.Entity<PostUser>()
+            .HasOne(pu => pu.User)
+            .WithMany(u => u.PostUsers)
+            .HasForeignKey(pu => pu.UserId);
+
+    modelBuilder.Entity<PostUser>()
+            .HasOne(pu => pu.AIPost)
+            .WithMany(p => p.PostUsers)
+            .HasForeignKey(pu => pu.PostId);
+
+    modelBuilder.Entity<AIPost>()
+        .HasOne(pu => pu.User)
+        .WithMany(p => p.AIPost)
+        .HasForeignKey(pu => pu.UserId);
+
   }
 }
