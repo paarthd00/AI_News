@@ -103,6 +103,12 @@ public class AIPostsController : ControllerBase
     public async Task<ActionResult<string>> Chat(ChatRequest request)
     {
         var httpClient = new HttpClient();
+
+        Console.WriteLine(Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
+
+        Console.WriteLine(Environment.GetEnvironmentVariable("OPENAI_API_ENDPOINT"));
+
+        Console.WriteLine(request.Prompt);
         httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
         var requestBody = new StringContent(JsonConvert.SerializeObject(new
         {

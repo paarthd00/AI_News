@@ -60,24 +60,24 @@ export default function AddForm() {
   const handleAIHelpSubmit = async (values: z.infer<typeof aiPromptSchema>) => {
     const { prompt } = values;
     alert(prompt);
-    // try {
-    //   const aiResponse = await fetch("/api/Posts/completepost", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       Prompt: prompt,
-    //       "MaxTokens": "60",
-    //       "Temperature": "0.5"
-    //     }),
-    //   }).then((response) => response.json());
+    try {
+      const aiResponse = await fetch("/api/AIPosts/completepost", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Prompt: prompt,
+          "MaxTokens": "60",
+          "Temperature": "0.5"
+        }),
+      }).then((response) => response.json());
 
-    //   addForm.setValue("content", aiResponse.choices[0].text);
+      addForm.setValue("content", aiResponse.choices[0].text);
 
-    // } catch (error) {
-    //   alert("Error getting ai help");
-    // }
+    } catch (error) {
+      alert("Error getting ai help");
+    }
   }
 
   return (
