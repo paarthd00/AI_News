@@ -19,7 +19,7 @@ namespace AINews.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    UserId = table.Column<string>(type: "text", nullable: false),
+                    userId = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>

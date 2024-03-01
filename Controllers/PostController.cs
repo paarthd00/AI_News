@@ -45,11 +45,19 @@ public class AIPostsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<AIPost>> PostPostItem(AIPost AIPost)
     {
-        _context.AIPosts.Add(AIPost);
-        
-        Console.WriteLine(AIPost);
+        AIPost.Id = Guid.NewGuid().ToString();
 
+        // find the user by the user id and set the user property 
+        var user = await _context.Users.Where(x => x.userId == AIPost.UserId).ToListAsync();
+        if (user.Count == 0)
+        {
+            return BadRequest();
+        }
+        AIPost.User = user[0];
+        AIPost.UserId = user[0].Id;
+        _context.AIPosts.Add(AIPost);
         await _context.SaveChangesAsync();
+
         await _hubContext.Clients.All.SendAsync("newpost", AIPost);
         return CreatedAtAction(nameof(GetPostItems), new { id = AIPost.Id }, AIPost);
     }
@@ -97,12 +105,12 @@ public class AIPostsController : ControllerBase
         var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
         var requestBody = new StringContent(JsonConvert.SerializeObject(new
-                    {
-                    model = "gpt-3.5-turbo-instruct",
-                    prompt = request.Prompt,
-                    max_tokens = request.MaxTokens,
-                    temperature = request.Temperature
-                    }), Encoding.UTF8, "application/json");
+        {
+            model = "gpt-3.5-turbo-instruct",
+            prompt = request.Prompt,
+            max_tokens = request.MaxTokens,
+            temperature = request.Temperature
+        }), Encoding.UTF8, "application/json");
 
         var response = await httpClient.PostAsync(Environment.GetEnvironmentVariable("OPENAI_API_ENDPOINT"), requestBody);
 

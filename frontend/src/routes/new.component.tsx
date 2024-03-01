@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import useSignalR from "../use-signalR";
 import { Post } from "@/network"
 import PostListing from "@/components/post-listing";
+
 export const component = function Home() {
   let { isPending, error, data, refetch } = useQuery({
     queryKey: ["postData"],

@@ -1,6 +1,7 @@
 import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
 import Header from "@/components/header";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
+import { useEffect } from "react";
 export const Route = createRootRoute({
   component: () => {
     const { user, isAuthenticated, login, logout } = useKindeAuth();
@@ -22,6 +23,11 @@ export const Route = createRootRoute({
         return response;
       }
     }
+
+    useEffect (() => {
+      loginRegisterUser();
+    }, [isAuthenticated]);
+
 
     return (
       <>
@@ -59,7 +65,6 @@ export const Route = createRootRoute({
         ) : (
           <button onClick={() => {
             login();
-            loginRegisterUser();
           }} type="button">
             Sign In
           </button>

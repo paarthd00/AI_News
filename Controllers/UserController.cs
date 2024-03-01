@@ -39,10 +39,11 @@ public class UsersController : ControllerBase
     [HttpPost("{userId}")]
     public async Task<ActionResult<User>> PostPostItem(string userId, User User)
     {
-        if (await _context.Users.AnyAsync(x => x.UserId == userId))
+        if (await _context.Users.AnyAsync(x => x.userId == userId))
         {
             return Conflict();
         }
+
         User.Id = Guid.NewGuid().ToString();
         _context.Users.Add(User);
 

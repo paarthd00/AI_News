@@ -90,11 +90,11 @@ namespace AINews.Migrations
                         .HasColumnType("text")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("userId")
                         .IsRequired()
                         .HasColumnType("text");
 
