@@ -59,7 +59,6 @@ export default function AddForm() {
 
   const handleAIHelpSubmit = async (values: z.infer<typeof aiPromptSchema>) => {
     const { prompt } = values;
-    alert(prompt);
     try {
       const aiResponse = await fetch("/api/AIPosts/completepost", {
         method: "POST",

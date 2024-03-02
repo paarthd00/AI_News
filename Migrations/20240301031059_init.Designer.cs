@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AINews.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240301012644_init")]
+    [Migration("20240301031059_init")]
     partial class init
     {
         /// <inheritdoc />

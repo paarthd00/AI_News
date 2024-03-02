@@ -6,6 +6,7 @@ using AINews.Hubs;
 using System.Text;
 using Newtonsoft.Json;
 
+
 namespace AINews.Controllers;
 
 [ApiController]
@@ -104,11 +105,6 @@ public class AIPostsController : ControllerBase
     {
         var httpClient = new HttpClient();
 
-        Console.WriteLine(Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
-
-        Console.WriteLine(Environment.GetEnvironmentVariable("OPENAI_API_ENDPOINT"));
-
-        Console.WriteLine(request.Prompt);
         httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
         var requestBody = new StringContent(JsonConvert.SerializeObject(new
         {
