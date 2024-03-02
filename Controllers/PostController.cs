@@ -6,7 +6,6 @@ using AINews.Hubs;
 using System.Text;
 using Newtonsoft.Json;
 
-
 namespace AINews.Controllers;
 
 [ApiController]
@@ -49,14 +48,20 @@ public class AIPostsController : ControllerBase
         AIPost.Id = Guid.NewGuid().ToString();
 
         // find the user by the user id and set the user property 
-        var user = await _context.Users.Where(x => x.userId == AIPost.UserId).ToListAsync();
-        if (user.Count == 0)
+        var users = await _context
+            .Users
+            .Where(x => x.userId == AIPost.UserId)
+            .ToListAsync();
+
+        if (users.Count == 0)
         {
             return BadRequest();
         }
-        AIPost.User = user[0];
-        AIPost.UserId = user[0].Id;
+
+        AIPost.User = users[0]; AIPost.UserId = users[0].Id;
+
         _context.AIPosts.Add(AIPost);
+
         await _context.SaveChangesAsync();
 
         await _hubContext.Clients.All.SendAsync("newpost", AIPost);
@@ -72,15 +77,24 @@ public class AIPostsController : ControllerBase
         }
 
         _context.Entry(AIPost).State = EntityState.Modified;
+
         await _context.SaveChangesAsync();
-        await _hubContext.Clients.All.SendAsync("updatepost", AIPost);
+
+        await _hubContext
+            .Clients
+            .All
+            .SendAsync("updatepost", AIPost);
+
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePostItem(string id)
     {
-        var PostItem = await _context.AIPosts.FindAsync(id);
+        var PostItem = await _context
+            .AIPosts
+            .FindAsync(id);
+
         if (PostItem == null)
         {
             return NotFound();
@@ -90,7 +104,10 @@ public class AIPostsController : ControllerBase
         {
             _context.AIPosts.Remove(PostItem);
             await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.SendAsync("deletepost", id);
+            await _hubContext
+                .Clients
+                .All
+                .SendAsync("deletepost", id);
         }
         catch (DbUpdateException)
         {
@@ -98,6 +115,43 @@ public class AIPostsController : ControllerBase
         }
 
         return NoContent();
+    }
+
+    [HttpPost("vote/{postId}")]
+    public async Task<ActionResult<AIPost>> UpDownVotePost(string postId, PostUserValue vote, string userId)
+    {
+
+        var postUserItems = await _context.PostUsers
+            .Where(x => x.AIPostId == postId && x.UserId == userId)
+            .ToListAsync();
+
+        if (postUserItems.Count == 0)
+        {
+            var postUser = new PostUser
+            {
+                AIPostId = postId,
+                UserId = userId,
+                Value = vote
+            };
+
+            _context.PostUsers.Add(postUser);
+        }
+        else
+        {
+            postUserItems[0].Value = vote; 
+            _context.Entry(postUserItems[0]).State = EntityState.Modified;
+        }
+
+        try
+        {
+            await _context.SaveChangesAsync();
+            await _hubContext.Clients.All.SendAsync("UpdateVote");
+            return NoContent();
+        }
+        catch (DbUpdateException)
+        {
+            return BadRequest();
+        }
     }
 
     [HttpPost("completepost")]

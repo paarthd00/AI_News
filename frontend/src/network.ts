@@ -37,6 +37,24 @@ export async function createPost({
   return newsPostResponse;
 }
 
+export async function upDownVotePost({
+  id,
+  vote,
+}: {
+  id: string;
+  vote: "up" | "down"
+}) {
+  const resp = await fetch(`/api/AIPosts/vote/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ vote }),
+  });
+
+  return resp;
+}
+
 export async function updatePost({
   id,
   newPost,

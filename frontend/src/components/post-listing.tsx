@@ -16,13 +16,13 @@ export default function PostListing(
   const { user } = useKindeAuth();
 
   const updatePostHandler = (post: Post) => {
+    
     const newPost: Post = {
       id: post.id,
       title: post.title,
       content: post.content,
       url: post.url,
-      authorId: post.authorId,
-      authorName: post.authorName,
+      userId: post.userId,
       createdAt: post.createdAt,
     };
 
@@ -33,7 +33,6 @@ export default function PostListing(
       });
     } catch (error) {
       alert("Error updating post");
-    } finally {
     }
   };
 
