@@ -1,6 +1,5 @@
 namespace AINews.Models;
 
-
 public class PostUser
 {
     public string Id { get; set; } = "";
@@ -14,7 +13,6 @@ public class PostUser
     public required string AIPostId { get; set; }
 
     public AIPost? AIPost { get; set; }
-
 }
 
 public enum PostUserValue

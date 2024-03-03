@@ -51,8 +51,5 @@ public class DatabaseContext : DbContext
       .HasForeignKey(e => e.AIPostId)
       .OnDelete(DeleteBehavior.Cascade);
 
-    // userScore
-
-
   }
 }

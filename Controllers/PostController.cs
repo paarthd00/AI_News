@@ -25,10 +25,14 @@ public class AIPostsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AIPost>>> GetPostItems()
     {
-        return await _context.AIPosts.ToListAsync();
+        var AIPostItems = await _context
+            .AIPosts
+            .Include(x => x.User)
+            .ToListAsync();
+
+        return AIPostItems;
     }
 
-    // /api/Posts/27
     [HttpGet("{id}")]
     public async Task<ActionResult<AIPost>> GetPostItem(string id)
     {
@@ -138,7 +142,7 @@ public class AIPostsController : ControllerBase
         }
         else
         {
-            postUserItems[0].Value = vote; 
+            postUserItems[0].Value = vote;
             _context.Entry(postUserItems[0]).State = EntityState.Modified;
         }
 

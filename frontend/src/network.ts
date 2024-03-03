@@ -1,9 +1,16 @@
+export type User = {
+  id: string;
+  userId: string;
+  userName: string;
+};
+
 export type Post = {
   id: string;
   title: string;
   content: string;
   url: string;
   userId: string;
+  user: User;
   createdAt: string;
 };
 
@@ -42,7 +49,7 @@ export async function upDownVotePost({
   vote,
 }: {
   id: string;
-  vote: "up" | "down"
+  vote: "up" | "down";
 }) {
   const resp = await fetch(`/api/AIPosts/vote/${id}`, {
     method: "PUT",

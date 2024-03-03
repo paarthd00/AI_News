@@ -5,9 +5,11 @@ import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
 import { updatePost } from "@/network";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
+import { useEffect } from "react";
 export default function PostListing(
   { posts }: { posts: Post[] }
 ) {
+
   const updatePostMutation = useMutation({
     mutationFn: updatePost,
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["postData"] }),
@@ -15,14 +17,19 @@ export default function PostListing(
 
   const { user } = useKindeAuth();
 
+  useEffect(() => {
+    console.log("posts", posts);
+  }, []);
+
   const updatePostHandler = (post: Post) => {
-    
+
     const newPost: Post = {
       id: post.id,
       title: post.title,
       content: post.content,
       url: post.url,
       userId: post.userId,
+      user: post.user,
       createdAt: post.createdAt,
     };
 
@@ -45,7 +52,7 @@ export default function PostListing(
               <div className="flex gap-2 items-center">
                 <p>{i + 1}.</p>
                 {
-                  user?.id !== post.authorId &&
+                  user?.id !== post.userId &&
                   <button onClick={() => updatePostHandler(post)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +81,7 @@ export default function PostListing(
                   )
                 }
                 {
-                  user?.id === post.authorId &&
+                  user?.id === post.userId &&
                   <Link
                     to="/single-post"
                     search={{
@@ -88,12 +95,12 @@ export default function PostListing(
               <div className="flex ps-2">
                 <p className="text-[#828282]">
                   {calculateTimeDifference(post.createdAt)} hours ago by{" "}
-                  {post.authorName}
+                  {post.user.userName}
                 </p>
               </div>
             </div>
           );
-        })}
+        })} 
       </div>
     </div>
   );
