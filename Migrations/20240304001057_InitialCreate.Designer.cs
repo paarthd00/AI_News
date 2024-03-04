@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AINews.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240301031059_init")]
-    partial class init
+    [Migration("20240304001057_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
