@@ -8,6 +8,7 @@ export type Post = {
   id: string;
   title: string;
   content: string;
+  likes: number;
   url: string;
   userId: string;
   user: User;

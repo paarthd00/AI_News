@@ -14,8 +14,6 @@ export const component = function Threads() {
   if (isPending) return <div>Loading...</div>;
   if (error) return <div>Something went wrong</div>;
 
-
-
   return <div className="py-10 container flex flex-col items-center gap-4 justify-center bg-[#F6F6EF]">
     <div className=" flex gap-2 items-center">
       <p>Search : </p>

@@ -102,7 +102,7 @@ export default function AddForm({
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={addForm.control}
             name="url"
             render={({ field }) => (
@@ -113,7 +113,7 @@ export default function AddForm({
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <div className="flex w-[100%] items-end gap-2 ">
             <FormField
               control={addForm.control}
