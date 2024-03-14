@@ -44,32 +44,37 @@ export async function createPost({
   return newsPostResponse;
 }
 
+export async function getUserById(userId: string) {
+  const result = await fetch(`/api/AIPosts/users/${userId}`);
+  return await result.json();
+}
+
 export async function upDownVotePost({
-  id,
-  vote,
+  postId,
+  userId,
 }: {
-  id: string;
-  vote: "up" | "down";
+  postId: string;
+  userId: string;
 }) {
-  const resp = await fetch(`/api/AIPosts/vote/${id}`, {
-    method: "PUT",
+  const resp = await fetch(`/api/AIPosts/vote/`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ vote }),
+    body: JSON.stringify({ userId, postId }),
   });
 
   return resp;
 }
 
 export async function updatePost({
-  id,
+  postId,
   newPost,
 }: {
-  id: string;
+  postId: string;
   newPost: Post;
 }) {
-  const resp = await fetch(`/api/AIPosts/${id}`, {
+  const resp = await fetch(`/api/AIPosts/${postId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

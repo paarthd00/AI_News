@@ -17,7 +17,6 @@ public class PostUser
 
 public enum PostUserValue
 {
-    DISLIKE = -1,
     NEUTRAL = 0,
     LIKE = 1
 }

@@ -121,42 +121,49 @@ public class AIPostsController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("vote/{postId}")]
-    public async Task<ActionResult<AIPost>> UpDownVotePost(string postId, PostUserValue vote, string userId)
+    [HttpPost("vote")]
+    public async Task<ActionResult<PostUser>> UpDownVotePost(UserPostRequest request)
     {
+        Console.WriteLine(request.PostId);
+        Console.WriteLine(request.UserId);
 
         var postUserItems = await _context.PostUsers
-            .Where(x => x.AIPostId == postId && x.UserId == userId)
+            .Where(x => x.AIPostId == request.PostId && x.UserId == request.UserId)
             .ToListAsync();
-
+        
         if (postUserItems.Count == 0)
         {
             var postUser = new PostUser
             {
-                AIPostId = postId,
-                UserId = userId,
-                Value = vote
+                AIPostId = request.PostId,
+                UserId = request.UserId,
+                Value = PostUserValue.LIKE
             };
 
             _context.PostUsers.Add(postUser);
+            await _context.SaveChangesAsync();
         }
         else
         {
-            postUserItems[0].Value = vote;
-            _context.Entry(postUserItems[0]).State = EntityState.Modified;
+            var postUser = postUserItems[0];
+            postUser.Value = postUser.Value == PostUserValue.LIKE ? PostUserValue.NEUTRAL : PostUserValue.LIKE;
+            await _context.SaveChangesAsync();
         }
 
-        try
-        {
-            await _context.SaveChangesAsync();
-            await _hubContext.Clients.All.SendAsync("UpdateVote");
-            return NoContent();
-        }
-        catch (DbUpdateException)
-        {
-            return BadRequest();
-        }
+        return Ok();
+
     }
+
+    [HttpPost("getlikes/{postId}")]
+    public async Task<ActionResult<int>> GetLikes(string postId)
+    {
+        var postUserItems = await _context.PostUsers
+            .Where(x => x.AIPostId == postId && x.Value == PostUserValue.LIKE)
+            .ToListAsync();
+
+        return postUserItems.Count;
+    }
+
 
     [HttpPost("completepost")]
     public async Task<ActionResult<string>> Chat(ChatRequest request)
@@ -180,6 +187,13 @@ public class AIPostsController : ControllerBase
     }
 
 }
+
+public class UserPostRequest
+{
+    public string UserId { get; set; } = "";
+    public string PostId { get; set; } = "";
+}
+
 
 public class ChatRequest
 {

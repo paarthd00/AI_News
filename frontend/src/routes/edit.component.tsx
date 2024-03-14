@@ -1,5 +1,3 @@
-
-
 export const component = function Edit() {
 
   return (

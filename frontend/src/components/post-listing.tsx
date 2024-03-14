@@ -3,41 +3,59 @@ import { Post } from "@/network";
 import { calculateTimeDifference } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
-import { updatePost } from "@/network";
+import { updatePost, upDownVotePost } from "@/network";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+
 export default function PostListing(
   { posts }: { posts: Post[] }
 ) {
 
-  const updatePostMutation = useMutation({
-    mutationFn: updatePost,
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["postData"] }),
-  });
 
   const { user } = useKindeAuth();
+
+  const userId = user?.id;
+  console.log("id: ", userId);
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ["currentUser", userId],
+    queryFn: async ({ queryKey }) => {
+      const [_, id] = queryKey;
+      const result = await fetch(`/api/users/${userId}`);
+      return await result.json();
+    },
+  });
+
+
+  console.log("user: ", data);
 
   useEffect(() => {
     console.log("posts", posts);
   }, []);
 
-  const updatePostHandler = (post: Post) => {
-
-    const newPost: Post = {
-      id: post.id,
-      title: post.title,
-      content: post.content,
-      url: post.url,
-      userId: post.userId,
-      user: post.user,
-      createdAt: post.createdAt,
-    };
+  const updateVote = async ({
+    postId, userId
+  }:
+    {
+      postId: string;
+      userId: string;
+    }
+  ) => {
 
     try {
-      updatePostMutation.mutate({
-        id: post.id,
-        newPost,
+      const resp = await fetch(`/api/AIPosts/vote/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          "UserId": userId,
+          "PostId": postId
+        }),
       });
+
+      return resp;
     } catch (error) {
       alert("Error updating post");
     }
@@ -53,7 +71,10 @@ export default function PostListing(
                 <p>{i + 1}.</p>
                 {
                   user?.id !== post.userId &&
-                  <button onClick={() => updatePostHandler(post)}>
+                  <button onClick={() => updateVote({
+                    postId: post.id,
+                    userId: data.id
+                  })}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       height="16"
@@ -100,7 +121,7 @@ export default function PostListing(
               </div>
             </div>
           );
-        })} 
+        })}
       </div>
     </div>
   );

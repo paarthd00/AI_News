@@ -22,6 +22,19 @@ public class UsersController : ControllerBase
         return await _context.Users.ToListAsync();
     }
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<User>> GetUser(string id)
+    {
+        var User = await _context.Users.Where(x => x.userId == id).FirstOrDefaultAsync();
+
+        if (User == null)
+        {
+            return NotFound();
+        }
+
+        return User;
+    }
+
 
     [HttpPost("{userId}")]
     public async Task<ActionResult<User>> PostUser(string userId, User User)
