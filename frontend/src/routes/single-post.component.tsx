@@ -48,7 +48,7 @@ export const component = function SinglePost() {
       <p>{data.authorName}</p>
       <p>{data.createdAt}</p>
 
-      {/* <button onClick={() => deletePostHandler(data.id)}>Delete</button> */}
+      <button onClick={() => deletePostHandler(data.id)}>Delete</button>
 
       <AddForm parentId={id} />
 
