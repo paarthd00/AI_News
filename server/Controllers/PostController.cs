@@ -25,10 +25,24 @@ public class AIPostsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AIPost>>> GetPostItems()
     {
+
+        // return a join between AIPost and PostUser
+
         var AIPostItems = await _context
             .AIPosts
             .Include(x => x.User)
             .ToListAsync();
+
+        var postUserItems = await _context
+            .PostUsers
+            .ToListAsync();
+
+        foreach (var post in AIPostItems)
+        {
+            post.Likes = postUserItems
+                .Where(x => x.AIPostId == post.Id && x.Value == PostUserValue.LIKE)
+                .Count();
+        }
 
         return AIPostItems;
     }
@@ -147,6 +161,11 @@ public class AIPostsController : ControllerBase
             postUser.Value = postUser.Value == PostUserValue.LIKE ? PostUserValue.NEUTRAL : PostUserValue.LIKE;
             await _context.SaveChangesAsync();
         }
+
+        await _hubContext
+        .Clients
+        .All
+        .SendAsync("updatepost", request.PostId);
 
         return Ok();
 

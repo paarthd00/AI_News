@@ -39,6 +39,9 @@ namespace AINews.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
 
+                    b.Property<int>("Likes")
+                        .HasColumnType("integer");
+
                     b.Property<string>("ParentId")
                         .IsRequired()
                         .HasColumnType("text");

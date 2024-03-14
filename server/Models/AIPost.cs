@@ -8,6 +8,7 @@ public class AIPost
 
   public string Title { get; set; } = "";
 
+  public int Likes { get; set; } = 0;
   public string Content { get; set; } = "";
 
   public string? Url { get; set; } = "";
