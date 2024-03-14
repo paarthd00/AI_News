@@ -39,7 +39,7 @@ Project under development.
 To-Do List:
 - [x] Authentication using kinde
 - [x] SignalR Update, Delete, Add Post
-- [ ] Upvote Down Vote
+- [x] Upvote Down Vote
 - [ ] Comment on other posts
 - [ ] Search of Threads
 - [ ] Search of Posts
