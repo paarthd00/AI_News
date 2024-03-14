@@ -20,7 +20,11 @@ import * as z from "zod";
 import { createPost } from "@/network";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 
-export default function AddForm() {
+export default function AddForm({
+  parentId
+}: {
+  parentId?: string;
+}) {
   const Navigate = useNavigate();
   const { user } = useKindeAuth();
 
@@ -49,7 +53,7 @@ export default function AddForm() {
     const { title, content, url } = values;
     const userId = user?.id || "";
     try {
-      addPostMutation.mutate({ title, content, url, userId});
+      addPostMutation.mutate({ title, content, url, userId, parentId });
     } catch (error) {
       alert("Error creating post");
     } finally {

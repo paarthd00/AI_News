@@ -1,9 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Post } from "@/network";
 import { calculateTimeDifference } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/main";
-import { updatePost, upDownVotePost } from "@/network";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -11,7 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 export default function PostListing(
   { posts }: { posts: Post[] }
 ) {
-
 
   const { user } = useKindeAuth();
 
@@ -26,9 +22,6 @@ export default function PostListing(
       return await result.json();
     },
   });
-
-
-  console.log("user: ", data);
 
   useEffect(() => {
     console.log("posts", posts);

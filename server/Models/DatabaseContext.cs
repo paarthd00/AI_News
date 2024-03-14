@@ -51,5 +51,10 @@ public class DatabaseContext : DbContext
       .HasForeignKey(e => e.AIPostId)
       .OnDelete(DeleteBehavior.Cascade);
 
+    // modelBuilder.Entity<AIPost>()
+    //   .HasOne(e => e.ParentId)
+    //   .WithMany()
+    //   .HasForeignKey(e => e.ParentId)
+    //   .OnDelete(DeleteBehavior.Cascade);
   }
 }

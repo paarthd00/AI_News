@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
 import { deletePost } from "@/network";
+import AddForm from "@/components/add-form";
+
 export const Route = createFileRoute("/single-post")({
   validateSearch: singlePostSearchSchema,
 });
@@ -45,7 +47,11 @@ export const component = function SinglePost() {
       <p>{data.content}</p>
       <p>{data.authorName}</p>
       <p>{data.createdAt}</p>
-      <button onClick={() => deletePostHandler(data.id)}>Delete</button>
+
+      {/* <button onClick={() => deletePostHandler(data.id)}>Delete</button> */}
+
+      <AddForm parentId={id} />
+
     </div>
   );
 };

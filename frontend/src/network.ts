@@ -28,18 +28,20 @@ export async function createPost({
   content,
   url,
   userId,
+  parentId,
 }: {
   title: string;
   content: string;
   url: string;
   userId: string;
+  parentId?: string | undefined;
 }) {
   const newsPostResponse = await fetch("/api/AIPosts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title, content, url, userId }),
+    body: JSON.stringify({ title, content, url, userId, parentId}),
   }).then((response) => response.json());
   return newsPostResponse;
 }

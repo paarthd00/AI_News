@@ -32,6 +32,7 @@ namespace AINews.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    ParentId = table.Column<string>(type: "text", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     Url = table.Column<string>(type: "text", nullable: true),

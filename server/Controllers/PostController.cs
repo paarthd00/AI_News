@@ -124,22 +124,20 @@ public class AIPostsController : ControllerBase
     [HttpPost("vote")]
     public async Task<ActionResult<PostUser>> UpDownVotePost(UserPostRequest request)
     {
-        Console.WriteLine(request.PostId);
-        Console.WriteLine(request.UserId);
 
         var postUserItems = await _context.PostUsers
             .Where(x => x.AIPostId == request.PostId && x.UserId == request.UserId)
             .ToListAsync();
-        
+
         if (postUserItems.Count == 0)
         {
             var postUser = new PostUser
             {
+                Id = Guid.NewGuid().ToString(),
                 AIPostId = request.PostId,
                 UserId = request.UserId,
                 Value = PostUserValue.LIKE
             };
-
             _context.PostUsers.Add(postUser);
             await _context.SaveChangesAsync();
         }
