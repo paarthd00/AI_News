@@ -41,7 +41,7 @@ export async function createPost({
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title, content, url, userId, parentId}),
+    body: JSON.stringify({ title, content, url, userId, parentId }),
   }).then((response) => response.json());
   return newsPostResponse;
 }
@@ -85,4 +85,9 @@ export async function updatePost({
   });
 
   return resp;
+}
+
+export async function allComments() {
+  const result = await fetch("/api/AIPosts/comments");
+  return await result.json();
 }

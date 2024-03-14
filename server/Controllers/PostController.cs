@@ -162,6 +162,18 @@ public class AIPostsController : ControllerBase
         return postUserItems.Count;
     }
 
+    [HttpGet("comments")]
+    public async Task<ActionResult<IEnumerable<AIPost>>> GetComments()
+    {
+        var AIPostItems = await _context
+            .AIPosts
+            .Include(x => x.User)
+            .Where(x => x.ParentId != "")
+            .ToListAsync();
+
+        return AIPostItems;
+    }
+
 
     [HttpPost("completepost")]
     public async Task<ActionResult<string>> Chat(ChatRequest request)
@@ -185,6 +197,11 @@ public class AIPostsController : ControllerBase
     }
 
 }
+
+
+
+
+
 
 public class UserPostRequest
 {
