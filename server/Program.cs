@@ -43,8 +43,9 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 
 app.MapHub<PostHub>("/r/postHub");
-// app.UseDefaultFiles();
-// app.UseStaticFiles();
-// app.MapFallbackToFile("index.html");
+
+//app.UseDefaultFiles();
+//app.UseStaticFiles();
+//app.MapFallbackToFile("index.html");
 
 app.Run();

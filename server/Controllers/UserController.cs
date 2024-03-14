@@ -24,7 +24,7 @@ public class UsersController : ControllerBase
 
 
     [HttpPost("{userId}")]
-    public async Task<ActionResult<User>> PostPostItem(string userId, User User)
+    public async Task<ActionResult<User>> PostUser(string userId, User User)
     {
         if (await _context.Users.AnyAsync(x => x.userId == userId))
         {
