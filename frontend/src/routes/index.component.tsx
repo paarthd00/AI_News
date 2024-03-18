@@ -39,7 +39,6 @@ export const component = function Home() {
   const { isAuthenticated, isLoading, login, user } = useKindeAuth();
 
 
-  console.log("user: ", user);
 
   useEffect(() => {
     if (isAuthenticated) {

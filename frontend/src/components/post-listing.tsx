@@ -2,30 +2,15 @@ import { Link } from "@tanstack/react-router";
 import { Post } from "@/network";
 import { calculateTimeDifference } from "@/lib/utils";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
-import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-
+import { useContext } from "react";
+import { CurrentUserContext } from "@/context/index";
 export default function PostListing(
   { posts }: { posts: Post[] }
 ) {
 
+  const [currentUser,setCurrentUser] = useContext(CurrentUserContext);
+
   const { user } = useKindeAuth();
-
-  const userId = user?.id;
-  console.log("id: ", userId);
-
-  const { isPending, error, data } = useQuery({
-    queryKey: ["currentUser", userId],
-    queryFn: async ({ queryKey }) => {
-      const [_, id] = queryKey;
-      const result = await fetch(`/api/users/${userId}`);
-      return await result.json();
-    },
-  });
-
-  useEffect(() => {
-    console.log("posts", posts);
-  }, []);
 
   const updateVote = async ({
     postId, userId
@@ -57,7 +42,7 @@ export default function PostListing(
   return (
     <div>
       <div className=" !px-0 container">
-        {posts.map((post: Post, i: number) => {
+        {posts.map((post: Post, _) => {
           return (
             <div className="flex flex-col bg-[#F6F6EF] p-3 " key={post.id}>
               <div className="flex gap-2 items-center">
@@ -65,7 +50,7 @@ export default function PostListing(
                   user?.id !== post.userId &&
                   <button onClick={() => updateVote({
                     postId: post.id,
-                    userId: data.id
+                    userId: currentUser.id
                   })}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

@@ -5,7 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
 import { deletePost } from "@/network";
 import AddForm from "@/components/add-form";
-
+import { useContext } from "react";
+import { CurrentUserContext } from "@/context/index";
 export const Route = createFileRoute("/single-post")({
   validateSearch: singlePostSearchSchema,
 });
@@ -13,6 +14,8 @@ export const Route = createFileRoute("/single-post")({
 export const component = function SinglePost() {
   const { id } = Route.useSearch();
   const Navigate = useNavigate();
+  const [currentUser, _] = useContext(CurrentUserContext);
+
   const { isPending, error, data } = useQuery({
     queryKey: ["singlePost", id],
     queryFn: async ({ queryKey }) => {
@@ -36,7 +39,6 @@ export const component = function SinglePost() {
       Navigate({ to: "/" });
     }
   }
-
   if (isPending) return <div>Loading...</div>;
 
   if (error) return <div>Something went wrong</div>;
@@ -47,8 +49,10 @@ export const component = function SinglePost() {
       <p>{data.content}</p>
       <p>{data.authorName}</p>
       <p>{data.createdAt}</p>
-
-      <button onClick={() => deletePostHandler(data.id)}>Delete</button>
+      {
+        currentUser?.id === data.userId &&
+        <button onClick={() => deletePostHandler(data.id)}>Delete</button>
+      }
 
       <AddForm parentId={id} />
 

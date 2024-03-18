@@ -1,0 +1,1 @@
+import{j as o}from"./index-GfsaLtzC.js";import{A as r}from"./add-form-B9SgOT1d.js";import"./utils-g-Ig_Dqa.js";import"./input-l1jmeQG_.js";import"./network-qS66KcGb.js";const e=function(){return o.jsx("div",{className:"container",children:o.jsx(r,{})})};export{e as component};

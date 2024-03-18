@@ -2,17 +2,18 @@ import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
 import Header from "@/components/header";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { useEffect } from "react";
+import { useState } from "react";
+import { CurrentUserContext } from "@/context/index";
+
 export const Route = createRootRoute({
   component: () => {
     const { user, isAuthenticated, login, logout } = useKindeAuth();
+    const [currentUser, setCurrentUser] = useState({} as any);
 
     const loginRegisterUser = async () => {
-
       if (user?.id && user.given_name) {
-
         const userId = user.id;
         const userName = user.given_name;
-
         const response = await fetch(`/api/Users/${userId}`, {
           method: "POST",
           headers: {
@@ -24,15 +25,25 @@ export const Route = createRootRoute({
       }
     }
 
-    useEffect (() => {
+    useEffect(() => {
       loginRegisterUser();
     }, [isAuthenticated]);
 
+    useEffect(() => {
+      if (isAuthenticated) {
+        (async () => {
+          const userId = user?.id;
+          const result = await fetch(`/api/users/${userId}`);
+          const data = await result.json();
+          setCurrentUser(data);
+        })();
+      }
+    }, [isAuthenticated])
 
     return (
       <>
         {isAuthenticated ? (
-          <>
+          <CurrentUserContext.Provider value={[currentUser, setCurrentUser]}>
             <div className="p-2 bg-[#ff6600] flex gap-2 container items-center justify-between w-100 px-3">
               <div className="flex gap-2 items-center ">
                 <Link to="/" className="[&.active]:font-bold">
@@ -61,7 +72,7 @@ export const Route = createRootRoute({
             </div>
             <hr />
             <Outlet />
-          </>
+          </CurrentUserContext.Provider>
         ) : (
           <button onClick={() => {
             login();
