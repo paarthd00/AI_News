@@ -41,6 +41,5 @@ To-Do List:
 - [x] SignalR Update, Delete, Add Post
 - [x] Upvote Down Vote
 - [x] Comment on other posts
-- [ ] Search of Threads
-- [ ] Search of Posts
+- [x] Search of Threads
 - [ ] Reusable component for new and home page
