@@ -4,7 +4,8 @@ import { useNavigate } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
 import { Textarea } from "@/components/ui/textarea";
-
+import { useState } from "react";
+import AIHelpForm from "@/components/ai-help-form";
 import {
   Form,
   FormControl,
@@ -27,6 +28,7 @@ export default function AddForm({
 }) {
   const Navigate = useNavigate();
   const { user } = useKindeAuth();
+  const [showAIHelp, setShowAIHelp] = useState(false);
 
   const aiHelpForm = useForm<z.infer<typeof aiPromptSchema>>({
     resolver: zodResolver(aiPromptSchema),
@@ -85,6 +87,11 @@ export default function AddForm({
 
   return (
     <>
+      <Button onClick={
+        () => setShowAIHelp(!showAIHelp)
+      }>
+        {showAIHelp ? "Hide" : "Show"} AI Help
+      </Button>
       <Form {...addForm}>
         <form
           onSubmit={addForm.handleSubmit(handleSubmit)}
@@ -102,18 +109,6 @@ export default function AddForm({
               </FormItem>
             )}
           />
-          {/* <FormField
-            control={addForm.control}
-            name="url"
-            render={({ field }) => (
-              <FormItem className="w-[100%]">
-                <FormControl>
-                  <Input className="rounded" placeholder="External Post Url" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
           <div className="flex w-[100%] items-end gap-2 ">
             <FormField
               control={addForm.control}
@@ -132,26 +127,7 @@ export default function AddForm({
         </form>
       </Form>
 
-      <Form {...aiHelpForm}>
-        <form
-          onSubmit={aiHelpForm.handleSubmit(handleAIHelpSubmit)}
-          className="py-10 px-4  flex items-center gap-3  w-full max-w-[600px] mx-auto bg-white rounded-lg shadow-lg"
-        >
-          <FormField
-            control={aiHelpForm.control}
-            name="prompt"
-            render={({ field }) => (
-              <FormItem className="w-[100%]">
-                <FormControl>
-                  <Input className="rounded" placeholder="Write post about C++" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" className="btn bg-[#f0f0f0]">AI help</Button>
-        </form>
-      </Form>
+      {showAIHelp && <AIHelpForm aiHelpForm={aiHelpForm} handleAIHelpSubmit={handleAIHelpSubmit} />}
     </>
   );
 }

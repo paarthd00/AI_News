@@ -53,9 +53,7 @@ export const component = function SinglePost() {
         currentUser?.id === data.userId &&
         <button onClick={() => deletePostHandler(data.id)}>Delete</button>
       }
-
       <AddForm parentId={id} />
-
     </div>
   );
 };
