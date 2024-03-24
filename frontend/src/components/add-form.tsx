@@ -86,7 +86,7 @@ export default function AddForm({
   }
 
   return (
-    <>
+    <div className="max-w-[600px]">
       <Button onClick={
         () => setShowAIHelp(!showAIHelp)
       }>
@@ -128,6 +128,6 @@ export default function AddForm({
       </Form>
 
       {showAIHelp && <AIHelpForm aiHelpForm={aiHelpForm} handleAIHelpSubmit={handleAIHelpSubmit} />}
-    </>
+    </div>
   );
 }

@@ -193,6 +193,17 @@ public class AIPostsController : ControllerBase
         return AIPostItems;
     }
 
+    [HttpGet("comments/{parentId}")]
+    public async Task<ActionResult<AIPost>> PostComment(string parentId)
+    {
+        var AIPostItems = await _context
+            .AIPosts
+            .Include(x => x.User)
+            .Where(x => x.ParentId == parentId)
+            .ToListAsync();
+
+        return Ok(AIPostItems); 
+    }
 
     [HttpPost("completepost")]
     public async Task<ActionResult<string>> Chat(ChatRequest request)
@@ -217,17 +228,11 @@ public class AIPostsController : ControllerBase
 
 }
 
-
-
-
-
-
 public class UserPostRequest
 {
     public string UserId { get; set; } = "";
     public string PostId { get; set; } = "";
 }
-
 
 public class ChatRequest
 {

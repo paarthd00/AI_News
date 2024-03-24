@@ -92,3 +92,9 @@ export async function allComments() {
   const result = await fetch("/api/AIPosts/comments");
   return await result.json();
 }
+
+export async function getCommentsByPostId(postId: string) {
+  const result = await fetch(`/api/AIPosts/comments/${postId}`);
+  return await result.json();
+}
+

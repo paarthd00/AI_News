@@ -7,6 +7,8 @@ import { deletePost } from "@/network";
 import AddForm from "@/components/add-form";
 import { useContext } from "react";
 import { CurrentUserContext } from "@/context/index";
+import { useState, useEffect } from "react";
+
 export const Route = createFileRoute("/single-post")({
   validateSearch: singlePostSearchSchema,
 });
@@ -15,6 +17,8 @@ export const component = function SinglePost() {
   const { id } = Route.useSearch();
   const Navigate = useNavigate();
   const [currentUser, _] = useContext(CurrentUserContext);
+  const [showCommentForm, setShowCommentForm] = useState(false);
+  const [comments, setComments] = useState([]);
 
   const { isPending, error, data } = useQuery({
     queryKey: ["singlePost", id],
@@ -39,21 +43,44 @@ export const component = function SinglePost() {
       Navigate({ to: "/" });
     }
   }
+
+  useEffect(() => {
+    (async()=>{
+      const result = await fetch(`/api/AIPosts/comments/${data?.id}`);
+      const jsonResult = await result.json();
+      setComments(jsonResult);
+    })();
+  }, [data?.id]);
+
   if (isPending) return <div>Loading...</div>;
 
   if (error) return <div>Something went wrong</div>;
 
   return (
-    <div className="container">
-      <h1>{data.title}</h1>
-      <p>{data.content}</p>
-      <p>{data.authorName}</p>
-      <p>{data.createdAt}</p>
+    <div className="container py-5">
+
+      <div className="mb-5">
+        <h1 className="text-3xl">{data.title}</h1>
+        <p>{data.content}</p>
+        <p>{data.authorName}</p>
+        <p>{data.createdAt}</p>
+        {
+          currentUser?.id === data.userId &&
+            <button onClick={() => deletePostHandler(data.id)}>Delete</button>
+        }
+      </div>
       {
-        currentUser?.id === data.userId &&
-        <button onClick={() => deletePostHandler(data.id)}>Delete</button>
+        comments.map((comment: any) => (
+          <div key={comment.id} className="mb-6 ms-5">
+            <h1 className="text-xl">{comment.title}</h1>
+            <p>{comment.authorName}</p>
+            <p>{comment.createdAt}</p>
+          </div>
+        ))
       }
-      <AddForm parentId={id} />
+      <button className="btn bg-[#f0f0f0] px-2 py-2 mb-5" onClick={() => setShowCommentForm(!showCommentForm)}>Add comment</button>
+      {showCommentForm && <AddForm parentId={id} />}
+
     </div>
   );
 };
