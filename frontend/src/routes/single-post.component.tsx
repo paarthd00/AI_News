@@ -3,7 +3,7 @@ import { singlePostSearchSchema } from "@/lib/validation";
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
-import { deletePost } from "@/network";
+import { Post, deletePost } from "@/network";
 import AddForm from "@/components/add-form";
 import { useContext } from "react";
 import { CurrentUserContext } from "@/context/index";
@@ -70,10 +70,10 @@ export const component = function SinglePost() {
         }
       </div>
       {
-        comments.map((comment: any) => (
+        comments.map((comment: Post) => (
           <div key={comment.id} className="mb-6 ms-5">
             <h1 className="text-xl">{comment.title}</h1>
-            <p>{comment.authorName}</p>
+            <p>{comment.user.userName}</p>
             <p>{comment.createdAt}</p>
           </div>
         ))
